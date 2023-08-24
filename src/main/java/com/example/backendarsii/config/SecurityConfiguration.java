@@ -35,6 +35,8 @@ public class SecurityConfiguration    {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .antMatchers("/webjars/**","/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs","/v3/api-docs/**",
+         "/swagger-ui/**").permitAll()
                     .antMatchers(APP_ROOT+"/auth/**").permitAll()
                     .antMatchers(APP_ROOT+"/member/**").hasAnyAuthority("MEMBER","ADMIN")
                     .antMatchers(APP_ROOT+"/admin/**").hasAnyAuthority("ADMIN")
