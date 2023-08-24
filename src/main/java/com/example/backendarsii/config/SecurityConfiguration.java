@@ -21,8 +21,13 @@ import static com.example.backendarsii.utils.Constants.APP_ROOT;
 @RequiredArgsConstructor
 public class SecurityConfiguration    {
 
+
     private final JwtAuthenticationFilter jwtAuthFilter;
+
     private final AuthenticationProvider authenticationProvider;
+
+
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -30,7 +35,9 @@ public class SecurityConfiguration    {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                    .antMatchers(APP_ROOT+"/auth/**","/swagger-ui.html").permitAll()
+                .antMatchers("/webjars/**","/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs","/v3/api-docs/**",
+         "/swagger-ui/**").permitAll()
+                    .antMatchers(APP_ROOT+"/auth/**").permitAll()
                     .antMatchers(APP_ROOT+"/member/**").hasAnyAuthority("MEMBER","ADMIN")
                     .antMatchers(APP_ROOT+"/admin/**").hasAnyAuthority("ADMIN")
                     .anyRequest().authenticated()
