@@ -4,6 +4,7 @@ package com.example.backendarsii.service.serviceImpl;
 import com.example.backendarsii.dto.RegisterRequest;
 import com.example.backendarsii.dto.UserDto;
 import com.example.backendarsii.entity.User;
+import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.UserRepository;
 import com.example.backendarsii.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +38,7 @@ public class UserServerImpl implements UserService {
 
     @Override
     public UserDto getMemberById(Long id) {
-        User user = userRepository.findById(id).orElseThrow();
-        System.out.println("*********************&&&&&&&&&&&&&&&&&&&&&&"+user.getAuthorities());
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("this user with id [%s] not exist",id)));
         return UserDto.makeUser(user);
     }
 
