@@ -1,8 +1,9 @@
 package com.example.backendarsii.service;
 
-import com.example.backendarsii.dto.RegisterRequest;
+import com.example.backendarsii.dto.requestDto.RegisterRequest;
+import com.example.backendarsii.dto.searchRequest.SearchAdmin;
+import com.example.backendarsii.dto.searchRequest.SearchMember;
 import com.example.backendarsii.dto.UserDto;
-import com.example.backendarsii.entity.User;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface UserService {
     UserDto getConnectedUser();
     void deleteMember(Long id);
     void enableMember(Long id);
+    List<UserDto> getMemberByFilter(SearchMember serachUserDTO);
+    List<UserDto> getAllUserByFilter(SearchAdmin searchAdmin);
 }

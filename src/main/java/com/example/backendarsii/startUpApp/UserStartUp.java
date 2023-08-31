@@ -1,10 +1,10 @@
 package com.example.backendarsii.startUpApp;
 
-import com.example.backendarsii.dto.RegisterRequest;
-import com.example.backendarsii.dto.enumData.Gender;
-import com.example.backendarsii.dto.enumData.Office;
-import com.example.backendarsii.dto.enumData.Post;
-import com.example.backendarsii.dto.enumData.Role;
+import com.example.backendarsii.dto.requestDto.RegisterRequest;
+import com.example.backendarsii.utils.enumData.Gender;
+import com.example.backendarsii.utils.enumData.Office;
+import com.example.backendarsii.utils.enumData.Post;
+import com.example.backendarsii.utils.enumData.Role;
 import com.example.backendarsii.entity.User;
 import com.example.backendarsii.repository.UserRepository;
 import com.example.backendarsii.service.AuthenticationService;
@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.HashSet;
 
 @Component
 @RequiredArgsConstructor
@@ -63,7 +65,8 @@ public class UserStartUp implements CommandLineRunner {
                 null,
                 null,
                 Role.MEMBER,
-                Boolean.FALSE
+                Boolean.FALSE,
+                new HashSet<>()
 
 
                 ));
@@ -73,7 +76,7 @@ public class UserStartUp implements CommandLineRunner {
                 "admin",
                 "admin",
                 "admin@gmail.com",
-                passwordEncoder.encode("Skandar_mb50**"),
+                passwordEncoder.encode("123"),
                 Gender.male,
                 "21333444",
                 "admin",
@@ -85,7 +88,8 @@ public class UserStartUp implements CommandLineRunner {
                 null,
                 null,
                 Role.ADMIN,
-                Boolean.FALSE
+                Boolean.FALSE,
+                new HashSet<>()
 
 
         ));

@@ -1,4 +1,4 @@
-package com.example.backendarsii.dto;
+package com.example.backendarsii.dto.requestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

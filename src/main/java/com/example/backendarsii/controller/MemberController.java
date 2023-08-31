@@ -1,5 +1,7 @@
 package com.example.backendarsii.controller;
 
+import com.example.backendarsii.dto.requestDto.RegisterRequest;
+import com.example.backendarsii.dto.searchRequest.SearchMember;
 import com.example.backendarsii.dto.UserDto;
 import com.example.backendarsii.service.UserService;
 import com.example.backendarsii.utils.Constants;
@@ -30,6 +32,17 @@ public class MemberController {
     public ResponseEntity<UserDto> getUserConnected(){
         return ResponseEntity.ok(userService.getConnectedUser());
     }
+
+    @GetMapping(value = "/filter")
+    public ResponseEntity<List<UserDto>> getAllMember(@RequestBody SearchMember request){
+        return ResponseEntity.ok(userService.getMemberByFilter(request));
+    }
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<String> updateMember(@PathVariable(name = "id") Long id ,@RequestBody RegisterRequest request){
+        userService.updateMember(id,request);
+        return ResponseEntity.ok("update success!!");
+    }
+
 
 
 

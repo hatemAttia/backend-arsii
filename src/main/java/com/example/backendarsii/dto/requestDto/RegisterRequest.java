@@ -1,22 +1,16 @@
-package com.example.backendarsii.dto;
+package com.example.backendarsii.dto.requestDto;
 
-import com.example.backendarsii.dto.enumData.Gender;
-import com.example.backendarsii.dto.enumData.Office;
-import com.example.backendarsii.dto.enumData.Role;
-import com.example.backendarsii.repository.UserRepository;
+import com.example.backendarsii.utils.enumData.Gender;
+import com.example.backendarsii.utils.enumData.Office;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.time.Instant;
 
 @Data
 @Builder

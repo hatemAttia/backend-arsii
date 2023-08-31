@@ -1,16 +1,14 @@
 package com.example.backendarsii.dto;
 
-import com.example.backendarsii.dto.enumData.Gender;
-import com.example.backendarsii.dto.enumData.Office;
-import com.example.backendarsii.dto.enumData.Post;
-import com.example.backendarsii.dto.enumData.Role;
+import com.example.backendarsii.utils.enumData.Gender;
+import com.example.backendarsii.utils.enumData.Office;
+import com.example.backendarsii.utils.enumData.Post;
+import com.example.backendarsii.utils.enumData.Role;
 import com.example.backendarsii.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

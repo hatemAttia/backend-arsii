@@ -1,10 +1,15 @@
 package com.example.backendarsii.controller;
 
+import com.example.backendarsii.dto.UserDto;
+import com.example.backendarsii.dto.searchRequest.SearchAdmin;
+import com.example.backendarsii.dto.searchRequest.SearchMember;
 import com.example.backendarsii.service.UserService;
 import com.example.backendarsii.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -13,6 +18,11 @@ public class AdminController {
 
     public final UserService userService;
 
+
+    @GetMapping(value = "/filter")
+    public ResponseEntity<List<UserDto>> getAllUserByFilter(@RequestBody SearchAdmin request){
+        return ResponseEntity.ok(userService.getAllUserByFilter(request));
+    }
     @PutMapping(value = "enableAccount/{id}")
     public ResponseEntity<String> enableMember(@PathVariable(name = "id") Long id){
         userService.enableMember(id);
