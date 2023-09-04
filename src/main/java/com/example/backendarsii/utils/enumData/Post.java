@@ -1,4 +1,4 @@
-package com.example.backendarsii.dto.enumData;
+package com.example.backendarsii.utils.enumData;
 
 public enum Post {
     MEMBER,

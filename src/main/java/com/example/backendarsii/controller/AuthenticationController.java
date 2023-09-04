@@ -1,16 +1,16 @@
 package com.example.backendarsii.controller;
 
-import com.example.backendarsii.dto.AuthenticationRequest;
-import com.example.backendarsii.dto.AuthenticationResponse;
-import com.example.backendarsii.dto.RegisterRequest;
+import com.example.backendarsii.dto.requestDto.AuthenticationRequest;
+import com.example.backendarsii.dto.responseDto.AuthenticationResponse;
+import com.example.backendarsii.dto.requestDto.RegisterRequest;
 import com.example.backendarsii.service.AuthenticationService;
 
 import com.example.backendarsii.utils.Constants;
 
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +21,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(Constants.APP_ROOT+"/auth")
 @RequiredArgsConstructor
+@Api(tags = "Authentication Management")
 
 public class AuthenticationController {
 

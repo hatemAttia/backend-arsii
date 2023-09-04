@@ -1,27 +1,25 @@
 package com.example.backendarsii.entity;
 
 
-import com.example.backendarsii.dto.enumData.Gender;
-import com.example.backendarsii.dto.enumData.Office;
-import com.example.backendarsii.dto.enumData.Post;
-import com.example.backendarsii.dto.enumData.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.backendarsii.utils.enumData.Gender;
+import com.example.backendarsii.utils.enumData.Office;
+import com.example.backendarsii.utils.enumData.Post;
+import com.example.backendarsii.utils.enumData.Role;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -30,7 +28,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @SQLDelete(sql = "UPDATE user SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
+@Where(clause = "deleted = false ")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,8 +48,7 @@ public class User implements UserDetails {
     private Post post;
     @Enumerated(EnumType.STRING)
     private Office office;
-
-
+    private String image;
     @CreationTimestamp
     private Instant expiresAt;
     @CreationTimestamp
@@ -61,6 +58,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private boolean deleted = Boolean.FALSE;
+
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -81,7 +81,8 @@ public class User implements UserDetails {
     public boolean isAccountNonExpired() {
         if (role == Role.MEMBER){
         // return true if today < expires_at
-        return expiresAt.isAfter(Instant.now());}
+        return expiresAt.isAfter(Instant.now());
+        }
         return true;
     }
 
