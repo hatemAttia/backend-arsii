@@ -1,10 +1,13 @@
 package com.example.backendarsii.service.serviceImpl;
 
 
-import com.example.backendarsii.dto.requestDto.RegisterRequest;
+
+import com.example.backendarsii.dto.requestDto.PasswordChangeRequest;
+import com.example.backendarsii.dto.requestDto.UpdateMemberRequest;
+import com.example.backendarsii.dto.requestDto.UpdateUserRequest;
 import com.example.backendarsii.dto.searchRequest.SearchAdmin;
 import com.example.backendarsii.dto.searchRequest.SearchMember;
-import com.example.backendarsii.dto.UserDto;
+import com.example.backendarsii.dto.responseDto.UserDto;
 import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.utils.enumData.Role;
 import com.example.backendarsii.entity.User;
@@ -14,6 +17,7 @@ import com.example.backendarsii.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +61,7 @@ public class UserServerImpl implements UserService {
     }
 
     @Override
-    public void updateMember(Long id, RegisterRequest request) {
+    public void updateMember(Long id, UpdateMemberRequest request) {
 
         User user = userRepository.findById(id).orElseThrow(()->
                 new NotFoundException(String.format("this user with id [%s] not exist",id)));
@@ -79,7 +83,38 @@ public class UserServerImpl implements UserService {
         user.setJob(request.getJob());
         user.setUniversityOrCompany(request.getUniversityOrCompany());
         user.setOffice(request.getOffice());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setImage(request.getImage());
+
+        userRepository.save(user);
+
+    }
+
+    @Override
+    public void updateUser(Long id, UpdateUserRequest request) {
+
+        User user = userRepository.findById(id).orElseThrow(()->
+                new NotFoundException(String.format("this user with id [%s] not exist",id)));
+
+        if(!user.getEmail().equals(request.getEmail()) && userRepository.existsByEmail(request.getEmail())){
+            throw  new ConflictException(String.format("this email is already exist ( [%s] ) ",request.getEmail()));
+        }
+        if(!user.getUsername().equals(request.getUserName()) && userRepository.existsByUserName(request.getUserName())){
+            throw  new ConflictException(String.format("this userName is already exist ( [%s] ) ",request.getUserName()));
+        }
+
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setUserName(request.getUserName());
+        user.setEmail(request.getEmail());
+        user.setGender(request.getGender());
+        user.setPhoneNumber(request.getPhoneNumber());
+        user.setRegion(request.getRegion());
+        user.setJob(request.getJob());
+        user.setUniversityOrCompany(request.getUniversityOrCompany());
+        user.setOffice(request.getOffice());
+        user.setImage(request.getImage());
+        user.setPost(request.getPost());
+        user.setRole(request.getRole());
 
         userRepository.save(user);
 
@@ -87,7 +122,6 @@ public class UserServerImpl implements UserService {
 
     @Override
     public UserDto getConnectedUser() {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
         Optional<User> user = userRepository.findByUserName(currentUserName);
@@ -169,8 +203,6 @@ public class UserServerImpl implements UserService {
         predicates.add(expiresPredicate);
         Predicate rolePredicate = criteriaBuilder.equal(root.get("role"), Role.MEMBER);
         predicates.add(rolePredicate);
-
-
 
         criteriaQuery.where(
                 criteriaBuilder.and(predicates.toArray(new Predicate[0]))
@@ -261,5 +293,19 @@ public class UserServerImpl implements UserService {
             userDto.add(member);
         }
         return userDto;
+    }
+
+    @Override
+    public void changePassword(PasswordChangeRequest passwordChangeRequest, Long id) {
+
+        User user = userRepository.findById(id).orElseThrow(
+                ()-> new NotFoundException(String.format("this user with id [%s] is not exist",id)));
+
+        if (!passwordEncoder.matches(passwordChangeRequest.getOldPassword(),user.getPassword())){
+            throw new ConflictException("Old password is incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
+        userRepository.save(user);
+
     }
 }

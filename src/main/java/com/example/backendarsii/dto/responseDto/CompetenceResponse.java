@@ -1,8 +1,7 @@
-package com.example.backendarsii.dto;
+package com.example.backendarsii.dto.responseDto;
 
 
 import com.example.backendarsii.entity.Competence;
-import com.example.backendarsii.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,19 +13,21 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class CompetenceDTO {
+public class CompetenceResponse {
 
     private Long id;
     private String name;
     private String description;
+    private CategoryResponse category;
     private Instant createdAt;
     private Instant updatedAt;
 
-    public static CompetenceDTO makeCompetence(Competence competence){
-        return CompetenceDTO.builder()
+    public static CompetenceResponse makeCompetence(Competence competence){
+        return CompetenceResponse.builder()
                 .id(competence.getId())
                 .name(competence.getName())
                 .description(competence.getDescription())
+                .category(CategoryResponse.makeCategory(competence.getCategory()))
                 .createdAt(competence.getCreatedAt())
                 .updatedAt(competence.getUpdatedAt()).build();
     }

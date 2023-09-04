@@ -27,13 +27,18 @@ public class Competence {
     private Long id;
     private String name;
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @CreationTimestamp
     private Instant createdAt;
     @UpdateTimestamp
     private Instant updatedAt;
     private boolean deleted = Boolean.FALSE;
 
-    @OneToMany(mappedBy = "competence")
-    private Set<UserCompetence> userCompetenceSet;
+
+
 
 }

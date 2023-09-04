@@ -13,7 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.example.backendarsii.utils.Constants.APP_ROOT;
+import static com.example.backendarsii.utils.Constants.*;
 
 
 @Configuration
@@ -38,8 +38,8 @@ public class SecurityConfiguration    {
                 .antMatchers("/webjars/**","/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs","/v3/api-docs/**",
          "/swagger-ui/**").permitAll()
                     .antMatchers(APP_ROOT+"/auth/**").permitAll()
-                    .antMatchers(APP_ROOT+"/member/**").hasAnyAuthority("MEMBER","ADMIN")
-                    .antMatchers(APP_ROOT+"/admin/**").hasAnyAuthority("ADMIN")
+                    .antMatchers(APP_ROOT_MEMBER+"/**").hasAnyAuthority("MEMBER","ADMIN")
+                    .antMatchers(APP_ROOT_ADMIN+"/**").hasAnyAuthority("ADMIN")
                     .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

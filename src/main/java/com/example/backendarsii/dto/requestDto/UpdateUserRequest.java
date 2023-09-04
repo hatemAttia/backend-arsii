@@ -2,13 +2,16 @@ package com.example.backendarsii.dto.requestDto;
 
 import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
+import com.example.backendarsii.utils.enumData.Post;
+import com.example.backendarsii.utils.enumData.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
-import javax.persistence.*;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -17,9 +20,7 @@ import javax.validation.constraints.Pattern;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
-
-
+public class UpdateUserRequest {
 
 
     @NotBlank(message = "First name is required")
@@ -30,23 +31,23 @@ public class RegisterRequest {
     private String userName;
     @Email(message ="your email is not valid" )
     private String email;
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&.])[A-Za-z\\d@$!%*#?&.]{8,}$",
-            message = "The password must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special symbol.")
-    private String password;
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Pattern(regexp = "^[0-9]{8}$",message = "phone number not valid")
     private String phoneNumber;
     @NotBlank(message = "your region is required")
     private String region;
+    @NotBlank(message = "job is required")
     private String job;
+    @NotBlank(message = "universityOrCompany is required")
     private String universityOrCompany;
     @Enumerated(EnumType.STRING)
     private Office office;
-    @URL(message = "this UrlImage is not valid")
+    @URL(message = "this UrlImage is not Valid")
     private String image;
-
-
-
+    @Enumerated(EnumType.STRING)
+    private Post post;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

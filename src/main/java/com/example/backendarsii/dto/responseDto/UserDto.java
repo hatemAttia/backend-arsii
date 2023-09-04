@@ -1,4 +1,4 @@
-package com.example.backendarsii.dto;
+package com.example.backendarsii.dto.responseDto;
 
 import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
@@ -35,6 +35,7 @@ public class UserDto {
     private Post post;
     @Enumerated(EnumType.STRING)
     private Office office;
+    private String image;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant expiresAt;
@@ -55,6 +56,7 @@ public class UserDto {
                 .region(user.getRegion())
                 .post(user.getPost())
                 .office(user.getOffice())
+                .image(user.getImage())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .expiresAt(user.getExpiresAt())

@@ -1,7 +1,7 @@
 package com.example.backendarsii.service;
 
 import com.example.backendarsii.dto.requestDto.AuthenticationRequest;
-import com.example.backendarsii.dto.AuthenticationResponse;
+import com.example.backendarsii.dto.responseDto.AuthenticationResponse;
 import com.example.backendarsii.dto.requestDto.RegisterRequest;
 
 public interface AuthenticationService {

@@ -13,7 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
+
 
 @Component
 @RequiredArgsConstructor
@@ -35,7 +35,8 @@ public class UserStartUp implements CommandLineRunner {
                 "Bembla",
                 "Batal",
                 "fi dar",
-                Office.OFFICE_SOUSSE));
+                Office.OFFICE_SOUSSE,
+                "https://www.overleaf.com/login?"));
         authenticationService.register(new RegisterRequest("ali",
                 "salem",
                 "alisalem",
@@ -46,7 +47,8 @@ public class UserStartUp implements CommandLineRunner {
                 "sousse",
                 "ingenieur",
                 "fi dar",
-                Office.OFFICE_SOUSSE));
+                Office.OFFICE_SOUSSE,
+                "https://www.overleaf.com/login?"));
         userRepository.save(new User(
                 null,
                 "mohamed",
@@ -61,12 +63,12 @@ public class UserStartUp implements CommandLineRunner {
                 "Gloulou",
                 Post.GENERAL_SECRETARY,
                 Office.OFFICE_SOUSSE,
+                "https://www.overleaf.com/login?",
                 null,
                 null,
                 null,
                 Role.MEMBER,
-                Boolean.FALSE,
-                new HashSet<>()
+                Boolean.FALSE
 
 
                 ));
@@ -84,12 +86,12 @@ public class UserStartUp implements CommandLineRunner {
                 "admin",
                 Post.NATIONAL_PRESIDENT,
                 Office.OFFICE_SOUSSE,
+                "https://www.overleaf.com/login?",
                 null,
                 null,
                 null,
                 Role.ADMIN,
-                Boolean.FALSE,
-                new HashSet<>()
+                Boolean.FALSE
 
 
         ));

@@ -1,7 +1,7 @@
 package com.example.backendarsii.service.serviceImpl;
 
 import com.example.backendarsii.dto.requestDto.AuthenticationRequest;
-import com.example.backendarsii.dto.AuthenticationResponse;
+import com.example.backendarsii.dto.responseDto.AuthenticationResponse;
 import com.example.backendarsii.dto.requestDto.RegisterRequest;
 import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.utils.enumData.Post;
@@ -49,6 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .role( Role.MEMBER)
                 .post(Post.MEMBER)
                 .office(request.getOffice())
+                .image(request.getImage())
                 .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);

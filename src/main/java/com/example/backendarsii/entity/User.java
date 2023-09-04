@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,6 +48,7 @@ public class User implements UserDetails {
     private Post post;
     @Enumerated(EnumType.STRING)
     private Office office;
+    private String image;
     @CreationTimestamp
     private Instant expiresAt;
     @CreationTimestamp
@@ -57,8 +59,6 @@ public class User implements UserDetails {
     private Role role;
     private boolean deleted = Boolean.FALSE;
 
-    @OneToMany(fetch = FetchType.EAGER ,mappedBy = "user")
-    private Set<UserCompetence> userCompetenceSet;
 
 
 

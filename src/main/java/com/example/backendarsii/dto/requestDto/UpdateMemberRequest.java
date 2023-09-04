@@ -8,7 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
-import javax.persistence.*;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -17,10 +18,7 @@ import javax.validation.constraints.Pattern;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
-
-
-
+public class UpdateMemberRequest {
 
     @NotBlank(message = "First name is required")
     private String firstName;
@@ -30,9 +28,6 @@ public class RegisterRequest {
     private String userName;
     @Email(message ="your email is not valid" )
     private String email;
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&.])[A-Za-z\\d@$!%*#?&.]{8,}$",
-            message = "The password must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special symbol.")
-    private String password;
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Pattern(regexp = "^[0-9]{8}$",message = "phone number not valid")
@@ -45,8 +40,5 @@ public class RegisterRequest {
     private Office office;
     @URL(message = "this UrlImage is not valid")
     private String image;
-
-
-
 
 }
