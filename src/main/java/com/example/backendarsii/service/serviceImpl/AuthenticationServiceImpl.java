@@ -1,11 +1,10 @@
 package com.example.backendarsii.service.serviceImpl;
 
-import com.example.backendarsii.dto.requestDto.AuthenticationRequest;
-import com.example.backendarsii.dto.responseDto.AuthenticationResponse;
-import com.example.backendarsii.dto.requestDto.RegisterRequest;
-import com.example.backendarsii.exception.ConflictException;
-import com.example.backendarsii.utils.enumData.Post;
-import com.example.backendarsii.utils.enumData.Role;
+import com.example.backendarsii.dto.AuthenticationRequest;
+import com.example.backendarsii.dto.AuthenticationResponse;
+import com.example.backendarsii.dto.RegisterRequest;
+import com.example.backendarsii.dto.enumData.Post;
+import com.example.backendarsii.dto.enumData.Role;
 import com.example.backendarsii.entity.User;
 import com.example.backendarsii.repository.UserRepository;
 import com.example.backendarsii.service.AuthenticationService;
@@ -26,13 +25,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
 
-        if (userRepository.findByEmail(request.getEmail()).isPresent()){
-            throw new ConflictException(String.format("this email is already exist ( [%s] ) ",request.getEmail()));
+        if (userRepository.findByEmail(request.getEmail()).isPresent()|| userRepository.findByUserName(request.getUserName()).isPresent()){
+            throw new RuntimeException("this email or userName is already exist");
         }
-        if ( userRepository.findByUserName(request.getUserName()).isPresent()){
-            throw new ConflictException(String.format("this email is already exist ( [%s] ) ",request.getUserName()));
-        }
-
 
         var user = User.builder()
                 .firstName(request.getFirstName())
@@ -49,7 +44,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .role( Role.MEMBER)
                 .post(Post.MEMBER)
                 .office(request.getOffice())
-                .image(request.getImage())
                 .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);

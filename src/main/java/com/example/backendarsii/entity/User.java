@@ -1,16 +1,15 @@
 package com.example.backendarsii.entity;
 
 
-import com.example.backendarsii.utils.enumData.Gender;
-import com.example.backendarsii.utils.enumData.Office;
-import com.example.backendarsii.utils.enumData.Post;
-import com.example.backendarsii.utils.enumData.Role;
+import com.example.backendarsii.dto.enumData.Gender;
+import com.example.backendarsii.dto.enumData.Office;
+import com.example.backendarsii.dto.enumData.Post;
+import com.example.backendarsii.dto.enumData.Role;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,10 +18,11 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
+
 
 @Data
 @Builder
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -58,9 +58,31 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private boolean deleted = Boolean.FALSE;
+   // @OneToMany(mappedBy = "user")
+   // private List<UserEvent> userEvents = new ArrayList<>();
 
 
-
+    public User(Long id, String firstName, String lastName, String userName, String email, String password, Gender gender, String phoneNumber, String region, String job, String universityOrCompany, Post post, Office office, String image, Instant expiresAt, Instant createdAt, Role role, boolean deleted) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.region = region;
+        this.job = job;
+        this.universityOrCompany = universityOrCompany;
+        this.post = post;
+        this.office = office;
+        this.image = image;
+        this.expiresAt = expiresAt;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.role = role;
+        this.deleted = deleted;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

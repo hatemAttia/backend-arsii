@@ -1,6 +1,4 @@
 package com.example.backendarsii.config;
-
-import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +20,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> repository.findByUserName(username)
-                .orElseThrow(() -> new NotFoundException(String.format("this user with name [%s] not found",username)));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Bean

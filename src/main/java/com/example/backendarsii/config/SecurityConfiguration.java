@@ -13,7 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.example.backendarsii.utils.Constants.*;
+import static com.example.backendarsii.utils.Constants.APP_ROOT;
 
 
 @Configuration
@@ -36,17 +36,17 @@ public class SecurityConfiguration    {
                 .disable()
                 .authorizeHttpRequests()
                 .antMatchers("/webjars/**","/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs","/v3/api-docs/**",
-         "/swagger-ui/**").permitAll()
-                    .antMatchers(APP_ROOT+"/auth/**").permitAll()
-                    .antMatchers(APP_ROOT_MEMBER+"/**").hasAnyAuthority("MEMBER","ADMIN")
-                    .antMatchers(APP_ROOT_ADMIN+"/**").hasAnyAuthority("ADMIN")
-                    .anyRequest().authenticated()
+                        "/swagger-ui/**").permitAll()
+                .antMatchers(APP_ROOT+"/auth/**").permitAll()
+                .antMatchers(APP_ROOT+"/member/**").hasAnyAuthority("MEMBER","ADMIN")
+                .antMatchers(APP_ROOT+"/admin/**").hasAnyAuthority("ADMIN")
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .authenticationProvider(authenticationProvider)
-                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
