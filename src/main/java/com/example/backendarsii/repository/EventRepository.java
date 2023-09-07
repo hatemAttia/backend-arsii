@@ -12,6 +12,7 @@ public interface EventRepository  extends JpaRepository<Event,Long> {
     @Query("SELECT e FROM Event e WHERE e.status = :status")
 
     List<Event> findByStatus(boolean status);
-    Optional<Event> findById(Long eventId);
+    Optional<Event> findById(Integer eventId);
 
+    void deleteById(Integer eventId);
 }

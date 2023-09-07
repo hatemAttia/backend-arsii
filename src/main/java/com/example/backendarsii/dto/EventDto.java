@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.time.Instant;
 import java.util.Date;
 
 @Data
@@ -17,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventDto {
-    private Long id;
+    private Integer id;
     private String title;
     private String description;
     private Date date;
@@ -29,9 +30,8 @@ public class EventDto {
     @Enumerated(EnumType.STRING)
     private TypeEvent typeEvent;
     private boolean isActive;
-    private Date createdAt;
-    private Date updatedAt;
-    private boolean deleted = Boolean.FALSE;
+    private Instant createdAt;
+    private Instant updatedAt;
 
     public static EventDto makeEvent(Event event){
         return EventDto.builder()
@@ -48,7 +48,6 @@ public class EventDto {
                 .isActive(event.isActive())
                 .createdAt(event.getCreatedAt())
                 .updatedAt(event.getUpdatedAt())
-                .deleted(event.isDeleted())
                 .build();
 }
 

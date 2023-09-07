@@ -72,7 +72,7 @@ public class UserStartUp implements CommandLineRunner {
                 "admin",
                 "admin",
                 "admin@gmail.com",
-                passwordEncoder.encode("Skandar_mb50**"),
+                passwordEncoder.encode("123"),
                 Gender.MALE,
                 "21333444",
                 "admin",

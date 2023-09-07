@@ -1,5 +1,6 @@
 package com.example.backendarsii.service.serviceImpl;
 import com.example.backendarsii.dto.EventDto;
+import com.example.backendarsii.dto.EventRequest;
 import com.example.backendarsii.entity.Event;
 import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.EventRepository;
@@ -7,6 +8,7 @@ import com.example.backendarsii.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +16,9 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EventServiceImpl implements EventService {
-    private  EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
    @Override
     public List<EventDto> getAllEvents() {
@@ -30,33 +33,26 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDto createEvent(EventDto eventDto) {
-        Event event = new Event(
-                eventDto.getId(),
-                eventDto.getTitle(),
-                eventDto.getDescription(),
-                eventDto.getDate(),
-                eventDto.getFormer(),
-                eventDto.getURLImage(),
-                eventDto.getNumberOfParticipants(),
-                eventDto.getLocation(),
-                eventDto.isStatus(),
-                eventDto.getTypeEvent(),
-                eventDto.getCreatedAt(),
-                eventDto.getUpdatedAt(),
-                eventDto.isDeleted()
-        );
-
-        Event savedEvent = eventRepository.save(event);
-        return EventDto.makeEvent(savedEvent);
+    public void createEvent(@org.jetbrains.annotations.NotNull EventRequest eventRequest) {
+        Event event =  Event.builder()
+                .title(eventRequest.getTitle())
+                .description(eventRequest.getDescription())
+                .former(eventRequest.getFormer())
+                .URLImage(eventRequest.getURLImage())
+                .numberOfParticipants(eventRequest.getNumberOfParticipants())
+                .location(eventRequest.getLocation())
+                .status(eventRequest.isStatus())
+                .typeEvent(eventRequest.getTypeEvent())
+                .build();
+                 eventRepository.save(event);
     }
 
     @Override
-    public void deleteEvent(Long eventId) {
+    public void deleteEvent(Integer eventId) {
         eventRepository.deleteById(eventId);
     }
     @Override
-    public EventDto getEventById(Long eventId) {
+    public EventDto getEventById(Integer eventId) {
         Optional<Event> optionalEvent = eventRepository.findById(eventId);
         if (optionalEvent.isPresent()) {
             Event event = optionalEvent.get();

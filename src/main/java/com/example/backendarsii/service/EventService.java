@@ -1,17 +1,18 @@
 package com.example.backendarsii.service;
 
 import com.example.backendarsii.dto.EventDto;
+import com.example.backendarsii.dto.EventRequest;
 
 import java.util.List;
 
 public interface EventService {
-    EventDto createEvent(EventDto eventDto);
+    void createEvent(EventRequest eventRequest);
 
     List<EventDto> getAllEvents();
 
-    void deleteEvent(Long eventId);
+    void deleteEvent(Integer eventId);
 
-    EventDto getEventById(Long eventId);
+    EventDto getEventById(Integer eventId);
 
     boolean isActive(EventDto event);
 }

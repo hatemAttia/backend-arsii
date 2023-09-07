@@ -16,13 +16,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 
 @Data
 @Builder
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -58,10 +58,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private boolean deleted = Boolean.FALSE;
-   // @OneToMany(mappedBy = "user")
-   // private List<UserEvent> userEvents = new ArrayList<>();
-
-
+    @OneToMany(mappedBy = "user")
+    private List<UserEvent> userEvents = new ArrayList<>();
     public User(Long id, String firstName, String lastName, String userName, String email, String password, Gender gender, String phoneNumber, String region, String job, String universityOrCompany, Post post, Office office, String image, Instant expiresAt, Instant createdAt, Role role, boolean deleted) {
         this.id = id;
         this.firstName = firstName;
