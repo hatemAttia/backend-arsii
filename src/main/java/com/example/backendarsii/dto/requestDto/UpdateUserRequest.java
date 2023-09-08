@@ -43,7 +43,6 @@ public class UpdateUserRequest {
     private String universityOrCompany;
     @Enumerated(EnumType.STRING)
     private Office office;
-    @URL(message = "this UrlImage is not Valid")
     private String image;
     @Enumerated(EnumType.STRING)
     private Post post;

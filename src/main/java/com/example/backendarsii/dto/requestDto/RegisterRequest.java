@@ -1,5 +1,6 @@
 package com.example.backendarsii.dto.requestDto;
 
+import com.example.backendarsii.entity.Image;
 import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
 import lombok.AllArgsConstructor;
@@ -43,7 +44,6 @@ public class RegisterRequest {
     private String universityOrCompany;
     @Enumerated(EnumType.STRING)
     private Office office;
-    @URL(message = "this UrlImage is not valid")
     private String image;
 
 
