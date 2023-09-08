@@ -22,13 +22,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
 
-        if (userRepository.findByEmail(request.getEmail()).isPresent()|| userRepository.findByUserName(request.getUserName()).isPresent()){
+       if (userRepository.findByEmail(request.getEmail()).isPresent()|| userRepository.findByUserName(request.getUserName()).isPresent()){
             throw new RuntimeException("this email or userName is already exist");
         }
-
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -45,9 +45,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .post(Post.MEMBER)
                 .office(request.getOffice())
                 .build();
-        userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
+                userRepository.save(user);
+                var jwtToken = jwtService.generateToken(user);
+                return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }

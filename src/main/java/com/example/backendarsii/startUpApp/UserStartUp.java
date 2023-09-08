@@ -64,8 +64,9 @@ public class UserStartUp implements CommandLineRunner {
                 null,
                 Role.MEMBER,
                 Boolean.FALSE
-        ));
 
+
+        ));
         userRepository.save(new User(
                 null,
                 "admin",
@@ -85,7 +86,9 @@ public class UserStartUp implements CommandLineRunner {
                 null,
                 Role.ADMIN,
                 Boolean.FALSE
+
+
         ));
+    }
 
-
-    }}
+}

@@ -26,7 +26,6 @@ public class Partner {
     //@Column(name="bank_id")
    // private int bankId;
     private Integer id;
-
     @Column(name="NAME", unique = true)
 
     private String name;
