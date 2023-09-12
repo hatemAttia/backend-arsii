@@ -7,7 +7,7 @@ import com.example.backendarsii.dto.requestDto.UpdateMemberRequest;
 import com.example.backendarsii.dto.requestDto.UpdateUserRequest;
 import com.example.backendarsii.dto.searchRequest.SearchAdmin;
 import com.example.backendarsii.dto.searchRequest.SearchMember;
-import com.example.backendarsii.dto.responseDto.UserDto;
+import com.example.backendarsii.dto.responseDto.UserResponse;
 import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.utils.enumData.Role;
 import com.example.backendarsii.entity.User;
@@ -17,7 +17,6 @@ import com.example.backendarsii.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,21 +42,21 @@ public class UserServerImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<UserDto> getAllMember() {
+    public List<UserResponse> getAllMember() {
 
         List<User> users = userRepository.findAllMember();
-        List<UserDto> members = new ArrayList<>();
+        List<UserResponse> members = new ArrayList<>();
         for (User user:users) {
-            UserDto member = UserDto.makeUser(user);
+            UserResponse member = UserResponse.makeUser(user);
             members.add(member);
         }
         return members;
     }
     @Override
-    public UserDto getMemberById(Long id) {
+    public UserResponse getMemberById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("this user with id [%s] not exist",id)));
-        return UserDto.makeUser(user);
+        return UserResponse.makeUser(user);
     }
 
     @Override
@@ -121,12 +120,12 @@ public class UserServerImpl implements UserService {
     }
 
     @Override
-    public UserDto getConnectedUser() {
+    public UserResponse getConnectedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
         Optional<User> user = userRepository.findByUserName(currentUserName);
         if (user.isPresent()) {
-            return UserDto.makeUser(user.get());
+            return UserResponse.makeUser(user.get());
         }else throw new RuntimeException("mafamech User *************");
     }
 
@@ -150,7 +149,7 @@ public class UserServerImpl implements UserService {
 
 
     @Override
-    public List<UserDto> getMemberByFilter(SearchMember serachUserDTO) {
+    public List<UserResponse> getMemberByFilter(SearchMember serachUserDTO) {
 
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
@@ -210,16 +209,16 @@ public class UserServerImpl implements UserService {
         TypedQuery<User> query = em.createQuery(criteriaQuery);
         List<User> users = query.getResultList();
 
-        List<UserDto> userDto = new ArrayList<>();
+        List<UserResponse> userDto = new ArrayList<>();
         for (User user:users) {
-            UserDto member = UserDto.makeUser(user);
+            UserResponse member = UserResponse.makeUser(user);
             userDto.add(member);
         }
         return userDto;
     }
 
     @Override
-    public List<UserDto> getAllUserByFilter(SearchAdmin searchAdmin) {
+    public List<UserResponse> getAllUserByFilter(SearchAdmin searchAdmin) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
         List<Predicate> predicates = new ArrayList<>();
@@ -287,9 +286,9 @@ public class UserServerImpl implements UserService {
         TypedQuery<User> query = em.createQuery(criteriaQuery);
         List<User> users = query.getResultList();
 
-        List<UserDto> userDto = new ArrayList<>();
+        List<UserResponse> userDto = new ArrayList<>();
         for (User user:users) {
-            UserDto member = UserDto.makeUser(user);
+            UserResponse member = UserResponse.makeUser(user);
             userDto.add(member);
         }
         return userDto;

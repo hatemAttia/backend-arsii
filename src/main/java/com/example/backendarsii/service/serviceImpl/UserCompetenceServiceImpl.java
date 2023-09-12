@@ -1,9 +1,8 @@
 package com.example.backendarsii.service.serviceImpl;
 
 import com.example.backendarsii.dto.requestDto.UserCompetenceRequest;
-import com.example.backendarsii.dto.responseDto.CompetenceResponse;
 import com.example.backendarsii.dto.responseDto.UserCompetenceResponse;
-import com.example.backendarsii.dto.responseDto.UserDto;
+import com.example.backendarsii.dto.responseDto.UserResponse;
 import com.example.backendarsii.entity.Competence;
 import com.example.backendarsii.entity.User;
 import com.example.backendarsii.entity.UserCompetence;
@@ -75,12 +74,12 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
     }
 
     @Override
-    public List<UserDto> getAllUserByCompetence(Long id) {
+    public List<UserResponse> getAllUserByCompetence(Long id) {
 
         List<UserCompetence> userCompetences = userCompetenceRepository.findAllByCompetenceId(id);
-        List<UserDto> userDtos = new ArrayList<>();
+        List<UserResponse> userDtos = new ArrayList<>();
         for (UserCompetence userCompetence  : userCompetences) {
-            UserDto userDto = UserDto.makeUser(userCompetence.getUser());
+            UserResponse userDto = UserResponse.makeUser(userCompetence.getUser());
             userDtos.add(userDto);
         }
         return userDtos;

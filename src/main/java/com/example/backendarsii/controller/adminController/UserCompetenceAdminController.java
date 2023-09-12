@@ -1,9 +1,8 @@
 package com.example.backendarsii.controller.adminController;
 
 import com.example.backendarsii.dto.requestDto.UserCompetenceRequest;
-import com.example.backendarsii.dto.responseDto.CompetenceResponse;
 import com.example.backendarsii.dto.responseDto.UserCompetenceResponse;
-import com.example.backendarsii.dto.responseDto.UserDto;
+import com.example.backendarsii.dto.responseDto.UserResponse;
 import com.example.backendarsii.service.UserCompetenceService;
 import com.example.backendarsii.service.UserService;
 import com.example.backendarsii.utils.Constants;
@@ -32,13 +31,13 @@ public class UserCompetenceAdminController {
         return ResponseEntity.ok("save success !!");
     }
     @GetMapping(value = "users/{id}")
-    public ResponseEntity<List<UserDto>> getAllUserByCompetence(@PathVariable Long id){
+    public ResponseEntity<List<UserResponse>> getAllUserByCompetence(@PathVariable Long id){
         return ResponseEntity.ok(userCompetenceService.getAllUserByCompetence(id));
     }
     @GetMapping(value = "competences")
     public ResponseEntity<List<UserCompetenceResponse>> getAllCompetencesByMe(){
 
-        UserDto userDto = userService.getConnectedUser();
+        UserResponse userDto = userService.getConnectedUser();
         return ResponseEntity.ok(userCompetenceService.getAllCompetenceByUser(userDto.getId()));
     }
     @GetMapping(value = "competences/{id}")

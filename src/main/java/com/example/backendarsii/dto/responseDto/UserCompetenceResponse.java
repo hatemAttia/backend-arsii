@@ -26,7 +26,7 @@ public class UserCompetenceResponse {
     private CompetenceResponse competence;
     private Instant createdAt;
     private Instant updatedAt;
-    private boolean deleted = Boolean.FALSE;
+
 
 
     public static UserCompetenceResponse makeUserCompetence(UserCompetence userCompetence){

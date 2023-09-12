@@ -18,7 +18,7 @@ import java.time.Instant;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserResponse {
 
     private Long id;
     private String firstName;
@@ -42,8 +42,8 @@ public class UserDto {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static UserDto makeUser(User user){
-        return UserDto.builder()
+    public static UserResponse makeUser(User user){
+        return UserResponse.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
