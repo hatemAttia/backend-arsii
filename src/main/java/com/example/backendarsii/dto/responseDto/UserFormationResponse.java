@@ -1,6 +1,5 @@
 package com.example.backendarsii.dto.responseDto;
 
-import com.example.backendarsii.entity.UserEvent;
 import com.example.backendarsii.entity.UserFormation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +20,7 @@ public class UserFormationResponse {
     private Instant createdAt;
     private Instant updatedAt;
 
-    public static UserFormationResponse makeUserFormationResponse(UserFormation userFormation){
+    public static UserFormationResponse makeUserFormationResponse(UserFormation userFormation) {
 
         return UserFormationResponse.builder()
                 .id(userFormation.getId())

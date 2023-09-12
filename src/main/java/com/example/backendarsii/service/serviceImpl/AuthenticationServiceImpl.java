@@ -1,14 +1,14 @@
 package com.example.backendarsii.service.serviceImpl;
 
 import com.example.backendarsii.dto.requestDto.AuthenticationRequest;
-import com.example.backendarsii.dto.responseDto.AuthenticationResponse;
 import com.example.backendarsii.dto.requestDto.RegisterRequest;
-import com.example.backendarsii.exception.ConflictException;
-import com.example.backendarsii.utils.enumData.Post;
-import com.example.backendarsii.utils.enumData.Role;
+import com.example.backendarsii.dto.responseDto.AuthenticationResponse;
 import com.example.backendarsii.entity.User;
+import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.repository.UserRepository;
 import com.example.backendarsii.service.AuthenticationService;
+import com.example.backendarsii.utils.enumData.Post;
+import com.example.backendarsii.utils.enumData.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,14 +23,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
 
-        if (userRepository.findByEmail(request.getEmail()).isPresent()){
-            throw new ConflictException(String.format("this email is already exist ( [%s] ) ",request.getEmail()));
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new ConflictException(String.format("this email is already exist ( [%s] ) ", request.getEmail()));
         }
-        if ( userRepository.findByUserName(request.getUserName()).isPresent()){
-            throw new ConflictException(String.format("this email is already exist ( [%s] ) ",request.getUserName()));
+        if (userRepository.findByUserName(request.getUserName()).isPresent()) {
+            throw new ConflictException(String.format("this email is already exist ( [%s] ) ", request.getUserName()));
         }
 
 
@@ -46,7 +47,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .universityOrCompany(request.getUniversityOrCompany())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .deleted(false)
-                .role( Role.MEMBER)
+                .role(Role.MEMBER)
                 .post(Post.MEMBER)
                 .office(request.getOffice())
                 .image(request.getImage())

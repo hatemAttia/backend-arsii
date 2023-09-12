@@ -17,22 +17,25 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY="dmXqhlCjICkICM3/mf0y7LRJDvyXpGB3BcBcnkuUVFKNLxoy15vZnaTnK4JkCl2T";
+    private static final String SECRET_KEY = "dmXqhlCjICkICM3/mf0y7LRJDvyXpGB3BcBcnkuUVFKNLxoy15vZnaTnK4JkCl2T";
+
     public String extractUsername(String token) {
-        return extractClaim(token,Claims::getSubject);
+        return extractClaim(token, Claims::getSubject);
     }
-    public <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(),userDetails);
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
     }
+
     public String generateToken(
-            Map<String,Object> extraClaims,
+            Map<String, Object> extraClaims,
             UserDetails userDetails
-    ){
+    ) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -43,7 +46,7 @@ public class JwtService {
                 .compact();
     }
 
-    public boolean isTokenValid(String token , UserDetails userDetails){
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUsername(token);
         return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
@@ -53,10 +56,10 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
-        return extractClaim(token,Claims::getExpiration);
+        return extractClaim(token, Claims::getExpiration);
     }
 
-    private Claims extractAllClaims(String token){
+    private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignInKey())

@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(Constants.APP_ROOT_MEMBER+"/competence")
+@RequestMapping(Constants.APP_ROOT_MEMBER + "/competence")
 @Api(tags = "(Member) Competence Management  ")
 @CrossOrigin("*")
 public class CompetenceMemberController {

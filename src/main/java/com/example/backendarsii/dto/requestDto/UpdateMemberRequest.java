@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,11 +25,11 @@ public class UpdateMemberRequest {
     private String lastName;
     @NotBlank(message = "Username is required")
     private String userName;
-    @Email(message ="your email is not valid" )
+    @Email(message = "your email is not valid")
     private String email;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @Pattern(regexp = "^[0-9]{8}$",message = "phone number not valid")
+    @Pattern(regexp = "^[0-9]{8}$", message = "phone number not valid")
     private String phoneNumber;
     @NotBlank(message = "your region is required")
     private String region;

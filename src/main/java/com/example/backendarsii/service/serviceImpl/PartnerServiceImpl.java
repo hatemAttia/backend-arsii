@@ -1,9 +1,7 @@
 package com.example.backendarsii.service.serviceImpl;
 
 import com.example.backendarsii.dto.requestDto.PartnerRequest;
-
 import com.example.backendarsii.dto.responseDto.PartnerResponse;
-
 import com.example.backendarsii.entity.Partner;
 import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.exception.NotFoundException;
@@ -20,10 +18,11 @@ import java.util.List;
 public class PartnerServiceImpl implements PartnerService {
 
     private final PartnerRepository partnerRepository;
+
     @Override
     public void addPartner(PartnerRequest partnerRequest) {
-        if (partnerRepository.existsByName(partnerRequest.getName())){
-            throw new ConflictException(String.format("this name ([%s]) is already exist ",partnerRequest.getName()));
+        if (partnerRepository.existsByName(partnerRequest.getName())) {
+            throw new ConflictException(String.format("this name ([%s]) is already exist ", partnerRequest.getName()));
         }
         Partner partner = Partner.builder()
                 .name(partnerRequest.getName())
@@ -42,7 +41,7 @@ public class PartnerServiceImpl implements PartnerService {
         List<Partner> partners = partnerRepository.findAll();
         List<PartnerResponse> partnerResponses = new ArrayList<>();
 
-        for (Partner partner: partners) {
+        for (Partner partner : partners) {
             PartnerResponse partnerResponse = PartnerResponse.makePartner(partner);
             partnerResponses.add(partnerResponse);
         }
@@ -52,7 +51,7 @@ public class PartnerServiceImpl implements PartnerService {
     @Override
     public PartnerResponse getPartnerByID(Long id) {
         Partner partner = partnerRepository.findById(id).orElseThrow(
-                ()->new NotFoundException(String.format("this id[%s] is not exist",id)));
+                () -> new NotFoundException(String.format("this id[%s] is not exist", id)));
 
         return PartnerResponse.makePartner(partner);
 
@@ -62,9 +61,9 @@ public class PartnerServiceImpl implements PartnerService {
     public void updatePartner(Long id, PartnerRequest partnerRequest) {
 
         Partner partner = partnerRepository.findById(id).orElseThrow(
-                ()->new NotFoundException(String.format("this id[%s] is not exist",id)));
-        if(!partner.getName().equals(partnerRequest.getName()) && partnerRepository.existsByName(partnerRequest.getName())){
-            throw  new ConflictException(String.format("this name is already exist ( [%s] ) ",partnerRequest.getName()));
+                () -> new NotFoundException(String.format("this id[%s] is not exist", id)));
+        if (!partner.getName().equals(partnerRequest.getName()) && partnerRepository.existsByName(partnerRequest.getName())) {
+            throw new ConflictException(String.format("this name is already exist ( [%s] ) ", partnerRequest.getName()));
         }
 
         partner.setName(partnerRequest.getName());
@@ -80,8 +79,8 @@ public class PartnerServiceImpl implements PartnerService {
 
     @Override
     public void deletePartner(Long id) {
-        if (!partnerRepository.existsById(id)){
-            throw new NotFoundException(String.format("this id[%s] is not exist",id));
+        if (!partnerRepository.existsById(id)) {
+            throw new NotFoundException(String.format("this id[%s] is not exist", id));
         }
         partnerRepository.deleteById(id);
     }

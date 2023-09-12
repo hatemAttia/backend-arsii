@@ -1,18 +1,17 @@
 package com.example.backendarsii.startUpApp;
 
 import com.example.backendarsii.dto.requestDto.RegisterRequest;
+import com.example.backendarsii.entity.User;
+import com.example.backendarsii.repository.UserRepository;
+import com.example.backendarsii.service.AuthenticationService;
 import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
 import com.example.backendarsii.utils.enumData.Post;
 import com.example.backendarsii.utils.enumData.Role;
-import com.example.backendarsii.entity.User;
-import com.example.backendarsii.repository.UserRepository;
-import com.example.backendarsii.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
 
 
 @Component
@@ -71,7 +70,7 @@ public class UserStartUp implements CommandLineRunner {
                 Boolean.FALSE
 
 
-                ));
+        ));
         userRepository.save(new User(
                 null,
                 "admin",

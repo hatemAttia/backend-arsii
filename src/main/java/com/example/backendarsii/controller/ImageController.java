@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(Constants.APP_ROOT+"/image")
+@RequestMapping(Constants.APP_ROOT + "/image")
 @RequiredArgsConstructor
 @Api(tags = "Image Management")
 @CrossOrigin("*")
@@ -27,14 +27,16 @@ public class ImageController {
     public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
         imageService.uploadImage(file);
         return ResponseEntity.status(HttpStatus.OK)
-                .body("Image uploaded successfully :"+file.getOriginalFilename());
+                .body("Image uploaded successfully :" + file.getOriginalFilename());
     }
+
     @GetMapping(value = "/info/{name}")
-    public ResponseEntity<Image> getImageDetails(@PathVariable("name") String name){
+    public ResponseEntity<Image> getImageDetails(@PathVariable("name") String name) {
         return ResponseEntity.ok(imageService.getImageDetails(name));
     }
+
     @GetMapping(value = "{name}")
-    public ResponseEntity<byte[]> getImage(@PathVariable("name") String name){
+    public ResponseEntity<byte[]> getImage(@PathVariable("name") String name) {
         Image image = imageService.getImageDetails(name);
         return ResponseEntity
                 .ok()

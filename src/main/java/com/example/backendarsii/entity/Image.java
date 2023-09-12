@@ -20,7 +20,7 @@ public class Image {
     private Long id;
     private String name;
     private String type;
-    @Column(name = "image",unique = false ,nullable = false,length = 5000000)
+    @Column(name = "image", unique = false, nullable = false, length = 5000000)
     private byte[] image;
 
 }

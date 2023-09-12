@@ -22,7 +22,7 @@ public class PartnerResponse {
     private Instant updatedAt;
 
 
-    public static PartnerResponse makePartner(Partner partner){
+    public static PartnerResponse makePartner(Partner partner) {
         return PartnerResponse.builder()
                 .id(partner.getId())
                 .name(partner.getName())

@@ -19,7 +19,7 @@ public class UserEventResponse {
     private Instant createdAt;
     private Instant updatedAt;
 
-    public static UserEventResponse makeUserEventResponse(UserEvent userEvent){
+    public static UserEventResponse makeUserEventResponse(UserEvent userEvent) {
 
         return UserEventResponse.builder()
                 .id(userEvent.getId())

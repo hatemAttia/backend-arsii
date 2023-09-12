@@ -1,6 +1,5 @@
 package com.example.backendarsii.controller.memberController;
 
-import com.example.backendarsii.dto.requestDto.PartnerRequest;
 import com.example.backendarsii.dto.responseDto.PartnerResponse;
 import com.example.backendarsii.service.PartnerService;
 import com.example.backendarsii.utils.Constants;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(Constants.APP_ROOT_MEMBER+"/partner")
+@RequestMapping(Constants.APP_ROOT_MEMBER + "/partner")
 @Api(tags = "(Member) Partner Management ")
 @CrossOrigin("*")
 public class PartnerMemberController {
@@ -22,11 +21,12 @@ public class PartnerMemberController {
 
 
     @GetMapping
-    public ResponseEntity<List<PartnerResponse>> getAllPartner(){
+    public ResponseEntity<List<PartnerResponse>> getAllPartner() {
         return ResponseEntity.ok(partnerService.getAllPartner());
     }
+
     @GetMapping(value = "{id}")
-    public ResponseEntity<PartnerResponse> getPartnerById (@PathVariable Long id){
+    public ResponseEntity<PartnerResponse> getPartnerById(@PathVariable Long id) {
         return ResponseEntity.ok(partnerService.getPartnerByID(id));
     }
 

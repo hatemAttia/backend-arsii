@@ -1,6 +1,6 @@
 package com.example.backendarsii.entity;
 
-import com.example.backendarsii.utils.enumData.Level;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

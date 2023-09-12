@@ -14,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(Constants.APP_ROOT_ADMIN+"/competence")
+@RequestMapping(Constants.APP_ROOT_ADMIN + "/competence")
 @Api(tags = "(Admin) Competence Management ")
 @CrossOrigin("*")
 public class CompetenceAdminController {
@@ -31,22 +31,25 @@ public class CompetenceAdminController {
     public ResponseEntity<CompetenceResponse> getCompetenceById(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(competenceService.getCompetenceById(id));
     }
+
     @PostMapping
-    public ResponseEntity<String> addCompetence(@RequestBody @Valid CompetenceRequest request){
+    public ResponseEntity<String> addCompetence(@RequestBody @Valid CompetenceRequest request) {
         competenceService.addCompetence(request);
         return ResponseEntity.ok("save success !");
     }
+
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<String> deleteCompetence(@PathVariable(name = "id") Long id){
+    public ResponseEntity<String> deleteCompetence(@PathVariable(name = "id") Long id) {
         competenceService.deleteCompetence(id);
         return ResponseEntity.ok("delete success !");
     }
+
     @PutMapping(value = "{id}")
     public ResponseEntity<String> updateCompetence(
             @PathVariable(name = "id") Long id,
-            @RequestBody @Valid CompetenceRequest request){
+            @RequestBody @Valid CompetenceRequest request) {
 
-        competenceService.updateCompetence(id,request);
+        competenceService.updateCompetence(id, request);
         return ResponseEntity.ok("update success !!!");
     }
 

@@ -4,7 +4,6 @@ import com.example.backendarsii.utils.enumData.EventType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.EnumType;
@@ -30,9 +29,6 @@ public class EventRequest {
     @Enumerated(EnumType.STRING)
     private EventType type;
     private Long partnerId;
-
-
-
 
 
 }

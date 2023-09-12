@@ -20,7 +20,7 @@ public class FormationUserResponse {
     private Instant createdAt;
     private Instant updatedAt;
 
-    public static FormationUserResponse makeFormationUserResponse(UserFormation userFormation){
+    public static FormationUserResponse makeFormationUserResponse(UserFormation userFormation) {
 
         return FormationUserResponse.builder()
                 .id(userFormation.getId())

@@ -16,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(Constants.APP_ROOT_ADMIN+"/userCompetence")
+@RequestMapping(Constants.APP_ROOT_ADMIN + "/userCompetence")
 @Api(tags = "(Admin) User's Competence management ")
 @CrossOrigin("*")
 public class UserCompetenceAdminController {
@@ -26,35 +26,40 @@ public class UserCompetenceAdminController {
 
 
     @PostMapping
-    public ResponseEntity<String> addUserCompetence(@RequestBody @Valid UserCompetenceRequest request){
+    public ResponseEntity<String> addUserCompetence(@RequestBody @Valid UserCompetenceRequest request) {
         userCompetenceService.addUserCompetence(request);
         return ResponseEntity.ok("save success !!");
     }
+
     @GetMapping(value = "users/{id}")
-    public ResponseEntity<List<UserResponse>> getAllUserByCompetence(@PathVariable Long id){
+    public ResponseEntity<List<UserResponse>> getAllUserByCompetence(@PathVariable Long id) {
         return ResponseEntity.ok(userCompetenceService.getAllUserByCompetence(id));
     }
+
     @GetMapping(value = "competences")
-    public ResponseEntity<List<UserCompetenceResponse>> getAllCompetencesByMe(){
+    public ResponseEntity<List<UserCompetenceResponse>> getAllCompetencesByMe() {
 
         UserResponse userDto = userService.getConnectedUser();
         return ResponseEntity.ok(userCompetenceService.getAllCompetenceByUser(userDto.getId()));
     }
+
     @GetMapping(value = "competences/{id}")
-    public ResponseEntity<List<UserCompetenceResponse>> getAllCompetencesByUser(@PathVariable Long id){
+    public ResponseEntity<List<UserCompetenceResponse>> getAllCompetencesByUser(@PathVariable Long id) {
 
         return ResponseEntity.ok(userCompetenceService.getAllCompetenceByUser(id));
     }
+
     @PutMapping("{id}")
     public ResponseEntity<String> updateUserCompetence(
             @PathVariable Long id,
             @RequestBody @Valid UserCompetenceRequest request
-    ){
-        userCompetenceService.updateUserCompetence(id,request);
+    ) {
+        userCompetenceService.updateUserCompetence(id, request);
         return ResponseEntity.ok("update success !!");
     }
+
     @DeleteMapping("{id}")
-    public ResponseEntity<String> updateUserCompetence(@PathVariable Long id){
+    public ResponseEntity<String> updateUserCompetence(@PathVariable Long id) {
         userCompetenceService.deleteUserCompetence(id);
         return ResponseEntity.ok("delete success !!");
     }

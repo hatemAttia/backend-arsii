@@ -27,17 +27,18 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
     private final UserRepository userRepository;
     private final CompetenceRepository competenceRepository;
     private final UserCompetenceRepository userCompetenceRepository;
+
     @Override
     public void addUserCompetence(UserCompetenceRequest userCompetenceRequest) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
         Optional<User> user = userRepository.findByUserName(currentUserName);
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             throw new NotFoundException("mafamech User *************");
         }
         Competence competence = competenceRepository.findById(userCompetenceRequest.getCompetenceId()).orElseThrow(
-                ()-> new NotFoundException(String.format("this Competence with id [%s] is not exist",userCompetenceRequest.getCompetenceId())));
+                () -> new NotFoundException(String.format("this Competence with id [%s] is not exist", userCompetenceRequest.getCompetenceId())));
         UserCompetence userCompetence = UserCompetence.builder()
                 .competence(competence)
                 .user(user.get())
@@ -48,12 +49,12 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
     }
 
     @Override
-    public void updateUserCompetence(Long id , UserCompetenceRequest userCompetenceRequest) {
+    public void updateUserCompetence(Long id, UserCompetenceRequest userCompetenceRequest) {
 
         UserCompetence userCompetence = userCompetenceRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException(String.format("this UserCompetence with id [%s] is not exist",id)));
+                () -> new NotFoundException(String.format("this UserCompetence with id [%s] is not exist", id)));
         Competence competence = competenceRepository.findById(userCompetenceRequest.getCompetenceId()).orElseThrow(
-                ()-> new NotFoundException(String.format("this Competence with id [%s] is not exist",userCompetenceRequest.getCompetenceId())));
+                () -> new NotFoundException(String.format("this Competence with id [%s] is not exist", userCompetenceRequest.getCompetenceId())));
 
         userCompetence.setCompetence(competence);
         userCompetence.setLevel(userCompetenceRequest.getLevel());
@@ -66,10 +67,10 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
 
         List<UserCompetence> userCompetences = userCompetenceRepository.findAllByUserId(id);
         List<UserCompetenceResponse> userCompetenceResponses = new ArrayList<>();
-            for (UserCompetence userCompetence : userCompetences) {
-                UserCompetenceResponse userCompetenceResponse = UserCompetenceResponse.makeUserCompetence(userCompetence);
-                userCompetenceResponses.add(userCompetenceResponse);
-            }
+        for (UserCompetence userCompetence : userCompetences) {
+            UserCompetenceResponse userCompetenceResponse = UserCompetenceResponse.makeUserCompetence(userCompetence);
+            userCompetenceResponses.add(userCompetenceResponse);
+        }
         return userCompetenceResponses;
     }
 
@@ -78,7 +79,7 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
 
         List<UserCompetence> userCompetences = userCompetenceRepository.findAllByCompetenceId(id);
         List<UserResponse> userDtos = new ArrayList<>();
-        for (UserCompetence userCompetence  : userCompetences) {
+        for (UserCompetence userCompetence : userCompetences) {
             UserResponse userDto = UserResponse.makeUser(userCompetence.getUser());
             userDtos.add(userDto);
         }
@@ -87,8 +88,8 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
 
     @Override
     public void deleteUserCompetence(Long id) {
-        if (!userCompetenceRepository.existsById(id)){
-            throw new NotFoundException(String.format("this userCompetence with id [%s] is not exist",id));
+        if (!userCompetenceRepository.existsById(id)) {
+            throw new NotFoundException(String.format("this userCompetence with id [%s] is not exist", id));
         }
         userCompetenceRepository.deleteById(id);
 

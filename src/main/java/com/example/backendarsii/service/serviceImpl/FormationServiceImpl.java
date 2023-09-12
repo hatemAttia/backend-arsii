@@ -18,19 +18,20 @@ import java.util.List;
 public class FormationServiceImpl implements FormationService {
 
     private final FormationRepository formationRepository;
+
     @Override
     public void addFormation(FormationRequest formationRequest, boolean status) {
-       formationRepository.save(Formation.builder()
-               .title(formationRequest.getTitle())
-               .description(formationRequest.getDescription())
-               .date(formationRequest.getDate())
-               .image(formationRequest.getImage())
-               .maxOfParticipants(formationRequest.getMaxOfParticipants())
-               .numberOfParticipants(0L)
-               .location(formationRequest.getLocation())
-               .formateur(formationRequest.getFormateur())
-               .price(formationRequest.getPrice())
-               .status(status).build());
+        formationRepository.save(Formation.builder()
+                .title(formationRequest.getTitle())
+                .description(formationRequest.getDescription())
+                .date(formationRequest.getDate())
+                .image(formationRequest.getImage())
+                .maxOfParticipants(formationRequest.getMaxOfParticipants())
+                .numberOfParticipants(0L)
+                .location(formationRequest.getLocation())
+                .formateur(formationRequest.getFormateur())
+                .price(formationRequest.getPrice())
+                .status(status).build());
     }
 
     @Override
@@ -38,18 +39,19 @@ public class FormationServiceImpl implements FormationService {
 
         List<Formation> formations = formationRepository.findAllFormation();
         List<FormationResponse> formationResponses = new ArrayList<>();
-        for (Formation formation: formations) {
+        for (Formation formation : formations) {
             FormationResponse formationResponse = FormationResponse.makeFormation(formation);
             formationResponses.add(formationResponse);
         }
         return formationResponses;
     }
+
     @Override
     public List<FormationResponse> getAllSuggestFormation() {
 
         List<Formation> formations = formationRepository.findAllSuggestFormation();
         List<FormationResponse> formationResponses = new ArrayList<>();
-        for (Formation formation: formations) {
+        for (Formation formation : formations) {
             FormationResponse formationResponse = FormationResponse.makeFormation(formation);
             formationResponses.add(formationResponse);
         }
@@ -59,7 +61,7 @@ public class FormationServiceImpl implements FormationService {
     @Override
     public FormationResponse getFormationById(Long id) {
         Formation formation = formationRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException(String.format("this Id[%s] is not exist ",id)));
+                () -> new NotFoundException(String.format("this Id[%s] is not exist ", id)));
         return FormationResponse.makeFormation(formation);
     }
 
@@ -67,7 +69,7 @@ public class FormationServiceImpl implements FormationService {
     public void updateFormation(Long id, UpdateFormationRequest updateFormation) {
 
         Formation formation = formationRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException(String.format("this Id[%s] is not exist ",id)));
+                () -> new NotFoundException(String.format("this Id[%s] is not exist ", id)));
         formation.setTitle(updateFormation.getTitle());
         formation.setDescription(updateFormation.getDescription());
         formation.setDate(updateFormation.getDate());
@@ -86,8 +88,8 @@ public class FormationServiceImpl implements FormationService {
     @Override
     public void deleteFormation(Long id) {
 
-        if(!formationRepository.existsById(id)){
-            throw new NotFoundException(String.format("this Id[%s] is not exist ",id));
+        if (!formationRepository.existsById(id)) {
+            throw new NotFoundException(String.format("this Id[%s] is not exist ", id));
         }
         formationRepository.deleteById(id);
 

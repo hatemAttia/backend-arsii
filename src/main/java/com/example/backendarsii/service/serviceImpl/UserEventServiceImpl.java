@@ -10,7 +10,6 @@ import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.EventRepository;
 import com.example.backendarsii.repository.UserEventRepository;
 import com.example.backendarsii.repository.UserRepository;
-
 import com.example.backendarsii.service.UserEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,20 +24,21 @@ public class UserEventServiceImpl implements UserEventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final UserEventRepository userEventRepository;
+
     @Override
     public void joinEvent(UserEventRequest request) {
 
         User user = userRepository.findById(request.getUserId()).orElseThrow(
-                ()-> new NotFoundException(String.format("this userId [%s] is not exist",request.getUserId())));
+                () -> new NotFoundException(String.format("this userId [%s] is not exist", request.getUserId())));
 
         Event event = eventRepository.findById(request.getEventId()).orElseThrow(
-                ()-> new NotFoundException(String.format("this eventId [%s] is not exist",request.getEventId())));
+                () -> new NotFoundException(String.format("this eventId [%s] is not exist", request.getEventId())));
 
-        event.setNumberOfParticipants(event.getNumberOfParticipants()+1);
+        event.setNumberOfParticipants(event.getNumberOfParticipants() + 1);
 
         userEventRepository.save(UserEvent.builder()
-                        .event(event)
-                        .user(user).build());
+                .event(event)
+                .user(user).build());
     }
 
     @Override
@@ -46,7 +46,7 @@ public class UserEventServiceImpl implements UserEventService {
         List<UserEvent> userEvents = userEventRepository.findAllByUserId(userId);
         List<EventUserResponse> eventUserResponses = new ArrayList<>();
 
-        for (UserEvent userEvent: userEvents) {
+        for (UserEvent userEvent : userEvents) {
             EventUserResponse eventUserResponse = EventUserResponse.makeEventUserResponse(userEvent);
             eventUserResponses.add(eventUserResponse);
         }
@@ -58,7 +58,7 @@ public class UserEventServiceImpl implements UserEventService {
         List<UserEvent> userEvents = userEventRepository.findAllByEventId(eventId);
         List<UserEventResponse> userEventResponses = new ArrayList<>();
 
-        for (UserEvent userEvent: userEvents) {
+        for (UserEvent userEvent : userEvents) {
             UserEventResponse userEventResponse = UserEventResponse.makeUserEventResponse(userEvent);
             userEventResponses.add(userEventResponse);
         }
@@ -69,9 +69,9 @@ public class UserEventServiceImpl implements UserEventService {
     public void deleteUserEvent(Long id) {
 
         UserEvent userEvent = userEventRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException(String.format("this id [%s] is not exist",id)));
+                () -> new NotFoundException(String.format("this id [%s] is not exist", id)));
         Event event = eventRepository.findById(userEvent.getEvent().getId()).orElseThrow();
-        event.setNumberOfParticipants(event.getNumberOfParticipants()-1);
+        event.setNumberOfParticipants(event.getNumberOfParticipants() - 1);
         eventRepository.save(event);
         userEventRepository.deleteById(id);
     }

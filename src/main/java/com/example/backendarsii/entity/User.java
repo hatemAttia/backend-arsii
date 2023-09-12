@@ -5,12 +5,14 @@ import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
 import com.example.backendarsii.utils.enumData.Post;
 import com.example.backendarsii.utils.enumData.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +21,6 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -77,9 +78,9 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        if (role == Role.MEMBER){
-        // return true if today < expires_at
-        return expiresAt.isAfter(Instant.now());
+        if (role == Role.MEMBER) {
+            // return true if today < expires_at
+            return expiresAt.isAfter(Instant.now());
         }
         return true;
     }

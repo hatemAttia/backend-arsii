@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +22,9 @@ public class ImageServiceImpl implements ImageService {
     public void uploadImage(MultipartFile file) throws IOException {
 
         imageRepository.save(Image.builder()
-                        .name(file.getOriginalFilename())
-                        .type(file.getContentType())
-                        .image(ImageUtility.compressImage(file.getBytes())).build());
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .image(ImageUtility.compressImage(file.getBytes())).build());
 
     }
 

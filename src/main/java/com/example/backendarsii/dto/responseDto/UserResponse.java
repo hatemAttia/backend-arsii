@@ -1,10 +1,10 @@
 package com.example.backendarsii.dto.responseDto;
 
+import com.example.backendarsii.entity.User;
 import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
 import com.example.backendarsii.utils.enumData.Post;
 import com.example.backendarsii.utils.enumData.Role;
-import com.example.backendarsii.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,7 +42,7 @@ public class UserResponse {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static UserResponse makeUser(User user){
+    public static UserResponse makeUser(User user) {
         return UserResponse.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())

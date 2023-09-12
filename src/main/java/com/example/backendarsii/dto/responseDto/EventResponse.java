@@ -5,7 +5,6 @@ import com.example.backendarsii.utils.enumData.EventType;
 import lombok.Builder;
 import lombok.Data;
 
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 
@@ -26,8 +25,8 @@ public class EventResponse {
     private Instant createdAt;
     private Instant updatedAt;
 
-    public static EventResponse makeEvent(Event event){
-        if (event.getPartner()==null){
+    public static EventResponse makeEvent(Event event) {
+        if (event.getPartner() == null) {
             return EventResponse.builder()
                     .id(event.getId())
                     .title(event.getTitle())

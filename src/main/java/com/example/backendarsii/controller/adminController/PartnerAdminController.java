@@ -14,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(Constants.APP_ROOT_ADMIN+"/partner")
+@RequestMapping(Constants.APP_ROOT_ADMIN + "/partner")
 @Api(tags = "(Admin) Partner Management ")
 @CrossOrigin("*")
 public class PartnerAdminController {
@@ -22,28 +22,32 @@ public class PartnerAdminController {
     private final PartnerService partnerService;
 
     @PostMapping
-    public ResponseEntity<String> addPartner(@RequestBody @Valid PartnerRequest request){
+    public ResponseEntity<String> addPartner(@RequestBody @Valid PartnerRequest request) {
         partnerService.addPartner(request);
         return ResponseEntity.ok("save success !");
     }
+
     @GetMapping
-    public ResponseEntity<List<PartnerResponse>> getAllPartner(){
+    public ResponseEntity<List<PartnerResponse>> getAllPartner() {
         return ResponseEntity.ok(partnerService.getAllPartner());
     }
+
     @GetMapping(value = "{id}")
-    public ResponseEntity<PartnerResponse> getPartnerById (@PathVariable Long id){
+    public ResponseEntity<PartnerResponse> getPartnerById(@PathVariable Long id) {
         return ResponseEntity.ok(partnerService.getPartnerByID(id));
     }
+
     @PutMapping(value = "{id}")
     public ResponseEntity<String> updatePartner(
             @PathVariable Long id,
-            @RequestBody @Valid PartnerRequest request){
+            @RequestBody @Valid PartnerRequest request) {
 
-        partnerService.updatePartner(id,request);
+        partnerService.updatePartner(id, request);
         return ResponseEntity.ok("update success !");
     }
+
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<String> deletePartner(@PathVariable Long id){
+    public ResponseEntity<String> deletePartner(@PathVariable Long id) {
         partnerService.deletePartner(id);
         return ResponseEntity.ok("delete success !");
     }
