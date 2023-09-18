@@ -1,6 +1,5 @@
 package com.example.backendarsii.startUpApp;
 
-import com.example.backendarsii.dto.requestDto.CategoryRequest;
 import com.example.backendarsii.dto.requestDto.CompetenceRequest;
 import com.example.backendarsii.service.CompetenceService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class CompetenceStartUp implements CommandLineRunner {
 
     private final CompetenceService competenceService;
+
     @Override
     public void run(String... args) throws Exception {
         competenceService.addCompetence(new CompetenceRequest(

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.Instant;
 
 @Data
@@ -22,7 +23,7 @@ public class CompetenceResponse {
     private Instant createdAt;
     private Instant updatedAt;
 
-    public static CompetenceResponse makeCompetence(Competence competence){
+    public static CompetenceResponse makeCompetence(Competence competence) {
         return CompetenceResponse.builder()
                 .id(competence.getId())
                 .name(competence.getName())

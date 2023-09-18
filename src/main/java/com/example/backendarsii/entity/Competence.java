@@ -11,7 +11,6 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Set;
 
 @Data
 @Builder
@@ -37,8 +36,6 @@ public class Competence {
     @UpdateTimestamp
     private Instant updatedAt;
     private boolean deleted = Boolean.FALSE;
-
-
 
 
 }

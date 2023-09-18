@@ -15,5 +15,4 @@ public enum Post {
     OPPORTUNITIES_INTERNSHIPS_MANAGER
 
 
-
 }

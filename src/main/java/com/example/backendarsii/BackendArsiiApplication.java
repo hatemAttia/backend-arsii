@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BackendArsiiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BackendArsiiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BackendArsiiApplication.class, args);
+    }
 
 }

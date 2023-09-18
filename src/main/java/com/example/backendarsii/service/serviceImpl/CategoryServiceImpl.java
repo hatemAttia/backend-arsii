@@ -1,7 +1,7 @@
 package com.example.backendarsii.service.serviceImpl;
 
-import com.example.backendarsii.dto.responseDto.CategoryResponse;
 import com.example.backendarsii.dto.requestDto.CategoryRequest;
+import com.example.backendarsii.dto.responseDto.CategoryResponse;
 import com.example.backendarsii.entity.Category;
 import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.exception.NotFoundException;
@@ -18,15 +18,14 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
 
-
     private final CategoryRepository categoryRepository;
 
 
     @Override
     public void addCategory(CategoryRequest categoryRequest) {
 
-        if (categoryRepository.existsByName(categoryRequest.getName())){
-            throw new ConflictException(String.format("this name ([%s]) is already exist ",categoryRequest.getName()));
+        if (categoryRepository.existsByName(categoryRequest.getName())) {
+            throw new ConflictException(String.format("this name ([%s]) is already exist ", categoryRequest.getName()));
         }
         Category category = Category.builder()
                 .name(categoryRequest.getName())
@@ -43,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categories = categoryRepository.findAll();
         List<CategoryResponse> categoryResponses = new ArrayList<>();
 
-        for (Category category: categories) {
+        for (Category category : categories) {
 
             CategoryResponse categoryResponse = CategoryResponse.makeCategory(category);
             categoryResponses.add(categoryResponse);
@@ -55,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponse getCategoryById(Long id) {
         Category category = categoryRepository.findById(id).orElseThrow(
-                ()->new NotFoundException(String.format("this id[%s] is not exist",id)));
+                () -> new NotFoundException(String.format("this id[%s] is not exist", id)));
 
         return CategoryResponse.makeCategory(category);
     }
@@ -63,8 +62,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long id) {
 
-        if (!categoryRepository.existsById(id)){
-            throw new NotFoundException(String.format("this id[%s] is not exist",id));
+        if (!categoryRepository.existsById(id)) {
+            throw new NotFoundException(String.format("this id[%s] is not exist", id));
         }
         categoryRepository.deleteById(id);
     }
@@ -73,9 +72,9 @@ public class CategoryServiceImpl implements CategoryService {
     public void updateCategory(Long id, CategoryRequest categoryRequest) {
 
         Category category = categoryRepository.findById(id).orElseThrow(
-                ()->new NotFoundException(String.format("this id[%s] is not exist",id)));
-        if(!category.getName().equals(categoryRequest.getName()) && categoryRepository.existsByName(categoryRequest.getName())){
-            throw  new ConflictException(String.format("this name is already exist ( [%s] ) ",categoryRequest.getName()));
+                () -> new NotFoundException(String.format("this id[%s] is not exist", id)));
+        if (!category.getName().equals(categoryRequest.getName()) && categoryRepository.existsByName(categoryRequest.getName())) {
+            throw new ConflictException(String.format("this name is already exist ( [%s] ) ", categoryRequest.getName()));
         }
         category.setName(categoryRequest.getName());
         category.setDescription(categoryRequest.getDescription());

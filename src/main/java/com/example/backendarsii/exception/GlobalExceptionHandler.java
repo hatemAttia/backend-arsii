@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,12 +20,10 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ApiBaseException.class)
-    public ResponseEntity<ErrorDetails> handleApiExceptions(ApiBaseException ex ,WebRequest request){
-        ErrorDetails details = new ErrorDetails(ex.getMessage(),request.getDescription(false));
-        return new ResponseEntity<>(details,ex.getStatusCode());
+    public ResponseEntity<ErrorDetails> handleApiExceptions(ApiBaseException ex, WebRequest request) {
+        ErrorDetails details = new ErrorDetails(ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(details, ex.getStatusCode());
     }
-
-
 
 
     @Override
@@ -46,7 +43,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
-
 
 
 }

@@ -8,7 +8,6 @@ import lombok.Data;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.time.Instant;
 
 @Data
 public class SearchAdmin {
