@@ -11,11 +11,20 @@ import com.example.backendarsii.utils.FileStorageService;
 import com.example.backendarsii.utils.Constants;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,7 +39,8 @@ public class AdminController {
 
     private final FileStorageService fileStorageService;
 
-
+    @Value("${file.upload-dir}")
+    private String fileStorageLocation;
     @PostMapping(value = "/filter")
     public ResponseEntity<List<UserResponse>> getAllUserByFilter(@RequestBody SearchAdmin request) {
         return ResponseEntity.ok(userService.getAllUserByFilter(request));
@@ -90,6 +100,15 @@ public class AdminController {
         return ResponseEntity.ok("upload success");
     }
 
+    @GetMapping("/{filename:.+}")
+    public ResponseEntity<Resource> serveImage(@PathVariable String filename) {
+
+        System.out.println("fileName  --**--:"+filename);
+      Resource resource =   fileStorageService.loadFileAsResource(filename);
+     return   ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Modify the content type as needed
+                .body(resource);
+    }
 
 
 
