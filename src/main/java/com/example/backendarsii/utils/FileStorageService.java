@@ -2,6 +2,9 @@ package com.example.backendarsii.utils;
 
 import com.example.backendarsii.dto.responseDto.UploadFileDetails;
 import lombok.Data;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -38,7 +42,10 @@ public class FileStorageService {
 
             relativePath = relativePath + "/" + fileName;
             Path targetLocation = Paths.get(fileStorageLocation).resolve(relativePath).normalize();
-
+            File uploadDir = new File(fileStorageLocation);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
             // Assurez-vous que le répertoire cible existe, sinon, créez-le
             if (!Files.exists(targetLocation)) {
                 Files.createDirectories(targetLocation);
@@ -63,16 +70,20 @@ public class FileStorageService {
 
     public Resource loadFileAsResource(String fileName) {
         try {
-            Path filePath = Paths.get(fileStorageLocation).resolve(fileName).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
+            Path imagePath = Paths.get(fileStorageLocation).resolve(fileName);
+            System.out.println(imagePath);
+            Resource resource = new ClassPathResource(fileStorageLocation+"\\"+fileName);
 
-            if (resource.exists()) {
+            if (resource.exists() && resource.isReadable()) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_TYPE, "image/jpeg"); // Modify the content type as needed
                 return resource;
             } else {
-                throw new RuntimeException("mahoch  ************"+fileName);
+                throw new RuntimeException("mahoch mawjoud ************");
             }
-        } catch (MalformedURLException ex) {
-            throw new RuntimeException("mahoch mawjoud ************"+fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("mahoch mawjoud ************");
         }
     }
 
