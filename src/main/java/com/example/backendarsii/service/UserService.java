@@ -6,7 +6,10 @@ import com.example.backendarsii.dto.requestDto.UpdateUserRequest;
 import com.example.backendarsii.dto.responseDto.UserResponse;
 import com.example.backendarsii.dto.searchRequest.SearchAdmin;
 import com.example.backendarsii.dto.searchRequest.SearchMember;
+import com.example.backendarsii.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface UserService {
@@ -29,4 +32,13 @@ public interface UserService {
     List<UserResponse> getAllUserByFilter(SearchAdmin searchAdmin);
 
     void changePassword(PasswordChangeRequest passwordChangeRequest, Long id);
+
+     void forgotPassword(String username) ;
+
+
+     void resetPasswordWithOTP(String username, String otp, String newPassword) ;
+
+     void uploadImage(MultipartFile file,Long id);
+
+
 }

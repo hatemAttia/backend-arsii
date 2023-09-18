@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -41,6 +42,7 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    private Date dateOfBirth;
     private String phoneNumber;
     private String region;
     private String job;
@@ -58,6 +60,7 @@ public class User implements UserDetails {
     private Instant updatedAt;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private String otp;
     private boolean deleted = Boolean.FALSE;
 
 

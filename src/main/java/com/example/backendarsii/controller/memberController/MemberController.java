@@ -10,7 +10,9 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -56,6 +58,11 @@ public class MemberController {
         UserResponse user = userService.getConnectedUser();
         userService.changePassword(request, user.getId());
         return ResponseEntity.ok("Password changed successfully !!");
+    }
+    @PostMapping(value = "uploadImage{userId}")
+    public ResponseEntity<String> storeImage(@PathParam("file") MultipartFile file, @PathVariable Long userId){
+        userService.uploadImage(file,userId);
+        return ResponseEntity.ok("upload success");
     }
 
 

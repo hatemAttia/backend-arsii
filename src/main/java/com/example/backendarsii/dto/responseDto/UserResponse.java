@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.time.Instant;
+import java.util.Date;
 
 @Data
 @Builder
@@ -27,6 +28,7 @@ public class UserResponse {
     private String email;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    private Date dateOfBirth;
     private String phoneNumber;
     private String region;
     private String job;
@@ -54,6 +56,7 @@ public class UserResponse {
                 .universityOrCompany(user.getUniversityOrCompany())
                 .phoneNumber(user.getPhoneNumber())
                 .region(user.getRegion())
+                .dateOfBirth(user.getDateOfBirth())
                 .post(user.getPost())
                 .office(user.getOffice())
                 .image(user.getImage())

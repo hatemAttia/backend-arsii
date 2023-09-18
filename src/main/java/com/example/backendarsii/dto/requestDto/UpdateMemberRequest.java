@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 @Data
 @Builder
@@ -29,6 +30,7 @@ public class UpdateMemberRequest {
     private String email;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    private Date dateOfBirth;
     @Pattern(regexp = "^[0-9]{8}$", message = "phone number not valid")
     private String phoneNumber;
     @NotBlank(message = "your region is required")
