@@ -13,6 +13,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+
 
 @Component
 @RequiredArgsConstructor
@@ -30,8 +32,10 @@ public class UserStartUp implements CommandLineRunner {
                 "skandar.MB50@gmail.com",
                 "Skandar_mb50**",
                 Gender.male,
+                new SimpleDateFormat("yyyy/M/d").parse("1999/6/9"),
                 "93255601",
                 "Bembla",
+
                 "Batal",
                 "fi dar",
                 Office.OFFICE_SOUSSE,
@@ -42,6 +46,7 @@ public class UserStartUp implements CommandLineRunner {
                 "ali.salem@gmail.com",
                 "Skandar_mb50**",
                 Gender.male,
+                new SimpleDateFormat("yyyy/M/d").parse("1999/6/9"),
                 "93255601",
                 "sousse",
                 "ingenieur",
@@ -56,6 +61,7 @@ public class UserStartUp implements CommandLineRunner {
                 "mohamedAli@gmail.com",
                 passwordEncoder.encode("Skandar_mb50**"),
                 Gender.male,
+                new SimpleDateFormat("yyyy/M/d").parse("1999/6/9"),
                 "21333444",
                 "khnis",
                 "civil engineering",
@@ -67,6 +73,7 @@ public class UserStartUp implements CommandLineRunner {
                 null,
                 null,
                 Role.MEMBER,
+                null,
                 Boolean.FALSE
 
 
@@ -79,6 +86,7 @@ public class UserStartUp implements CommandLineRunner {
                 "admin@gmail.com",
                 passwordEncoder.encode("123"),
                 Gender.male,
+                new SimpleDateFormat("yyyy/M/d").parse("1999/6/9"),
                 "21333444",
                 "admin",
                 "admin",
@@ -90,6 +98,7 @@ public class UserStartUp implements CommandLineRunner {
                 null,
                 null,
                 Role.ADMIN,
+                null,
                 Boolean.FALSE
 
 

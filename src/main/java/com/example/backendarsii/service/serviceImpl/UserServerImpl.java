@@ -1,9 +1,11 @@
 package com.example.backendarsii.service.serviceImpl;
 
 
+import com.example.backendarsii.config.UtilsConfiguration;
 import com.example.backendarsii.dto.requestDto.PasswordChangeRequest;
 import com.example.backendarsii.dto.requestDto.UpdateMemberRequest;
 import com.example.backendarsii.dto.requestDto.UpdateUserRequest;
+import com.example.backendarsii.dto.responseDto.UploadFileDetails;
 import com.example.backendarsii.dto.responseDto.UserResponse;
 import com.example.backendarsii.dto.searchRequest.SearchAdmin;
 import com.example.backendarsii.dto.searchRequest.SearchMember;
@@ -12,12 +14,18 @@ import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.UserRepository;
 import com.example.backendarsii.service.UserService;
+import com.example.backendarsii.utils.EmailUtil;
+import com.example.backendarsii.utils.FileStorageService;
+import com.example.backendarsii.utils.OtpUtil;
 import com.example.backendarsii.utils.enumData.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -25,11 +33,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @Service
@@ -39,6 +46,13 @@ public class UserServerImpl implements UserService {
     private final UserRepository userRepository;
     private final EntityManager em;
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private OtpUtil otpUtil;
+    @Autowired
+    private EmailUtil emailUtil;
+    @Autowired
+    private FileStorageService fileStorageService;
+
 
     @Override
     public List<UserResponse> getAllMember() {
@@ -79,6 +93,7 @@ public class UserServerImpl implements UserService {
         user.setGender(request.getGender());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setRegion(request.getRegion());
+        user.setDateOfBirth(request.getDateOfBirth());
         user.setJob(request.getJob());
         user.setUniversityOrCompany(request.getUniversityOrCompany());
         user.setOffice(request.getOffice());
@@ -108,6 +123,7 @@ public class UserServerImpl implements UserService {
         user.setGender(request.getGender());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setRegion(request.getRegion());
+        user.setDateOfBirth(request.getDateOfBirth());
         user.setJob(request.getJob());
         user.setUniversityOrCompany(request.getUniversityOrCompany());
         user.setOffice(request.getOffice());
@@ -307,4 +323,47 @@ public class UserServerImpl implements UserService {
         userRepository.save(user);
 
     }
+
+
+    @Transactional
+    public void forgotPassword(String username) {
+        User user = userRepository.findByUserName(username).orElseThrow();
+
+        String otp = otpUtil.generateOTP();
+        user.setOtp(otp);
+        userRepository.save(user);
+        emailUtil.sendOTPEmail(user.getEmail(), otp);
+    }
+
+    @Transactional
+    public void resetPasswordWithOTP(String username, String otp, String newPassword) {
+        User user = userRepository.findByUserName(username).orElseThrow();
+        if (otp.equals(user.getOtp())) {
+            String hashedPassword = passwordEncoder.encode(newPassword);
+            user.setPassword(hashedPassword);
+            user.setOtp(null);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("Invalid OTP or user not found.");
+        }
+    }
+
+    @Override
+    public void uploadImage(MultipartFile file, Long id) {
+
+        User user = userRepository.findById(id).orElseThrow(
+                ()-> new NotFoundException("user is not exist"));
+
+        if (UtilsConfiguration.isImage(Objects.requireNonNull(file.getContentType()))){
+
+            UploadFileDetails uploadFileDetails = fileStorageService.storeFile(file, "USER_IMG");
+
+             user.setImage(uploadFileDetails.getFileDisplayUri());
+             userRepository.save(user);
+        }else{
+            throw new RuntimeException("mahiyech image****************");
+        }
+    }
+
+
 }

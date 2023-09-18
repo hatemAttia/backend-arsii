@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 @Data
 @Builder
@@ -33,6 +35,7 @@ public class RegisterRequest {
     private String password;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    private Date dateOfBirth;
     @Pattern(regexp = "^[0-9]{8}$", message = "phone number not valid")
     private String phoneNumber;
     @NotBlank(message = "your region is required")
