@@ -8,6 +8,7 @@ import com.example.backendarsii.dto.searchRequest.SearchAdmin;
 import com.example.backendarsii.dto.searchRequest.SearchMember;
 import com.example.backendarsii.entity.User;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -27,6 +28,8 @@ public interface UserService {
 
     void enableMember(Long id);
 
+    void disableAccount(Long id);
+
     List<UserResponse> getMemberByFilter(SearchMember serachUserDTO);
 
     List<UserResponse> getAllUserByFilter(SearchAdmin searchAdmin);
@@ -39,6 +42,10 @@ public interface UserService {
      void resetPasswordWithOTP(String username, String otp, String newPassword) ;
 
      void uploadImage(MultipartFile file,Long id);
+     Resource serveImage(String fileName);
+
+    void uploadCv(MultipartFile file,Long id);
+    Resource serveCv(String fileName);
 
 
 }

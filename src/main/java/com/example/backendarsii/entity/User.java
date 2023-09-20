@@ -52,6 +52,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Office office;
     private String image;
+    private String cv;
     @CreationTimestamp
     private Instant expiresAt;
     @CreationTimestamp
@@ -61,6 +62,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private String otp;
+    private boolean status = Boolean.TRUE;
     private boolean deleted = Boolean.FALSE;
 
 
@@ -83,7 +85,7 @@ public class User implements UserDetails {
     public boolean isAccountNonExpired() {
         if (role == Role.MEMBER) {
             // return true if today < expires_at
-            return expiresAt.isAfter(Instant.now());
+            return (expiresAt.isAfter(Instant.now()) && status);
         }
         return true;
     }

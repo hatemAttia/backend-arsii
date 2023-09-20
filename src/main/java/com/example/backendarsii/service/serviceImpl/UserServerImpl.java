@@ -20,11 +20,14 @@ import com.example.backendarsii.utils.OtpUtil;
 import com.example.backendarsii.utils.enumData.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
@@ -97,7 +100,7 @@ public class UserServerImpl implements UserService {
         user.setJob(request.getJob());
         user.setUniversityOrCompany(request.getUniversityOrCompany());
         user.setOffice(request.getOffice());
-        user.setImage(request.getImage());
+
 
         userRepository.save(user);
 
@@ -127,7 +130,6 @@ public class UserServerImpl implements UserService {
         user.setJob(request.getJob());
         user.setUniversityOrCompany(request.getUniversityOrCompany());
         user.setOffice(request.getOffice());
-        user.setImage(request.getImage());
         user.setPost(request.getPost());
         user.setRole(request.getRole());
 
@@ -161,6 +163,13 @@ public class UserServerImpl implements UserService {
 
         userRepository.save(user);
 
+    }
+
+    @Override
+    public void disableAccount(Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setStatus(!user.isStatus());
+        userRepository.save(user);
     }
 
 
@@ -356,13 +365,41 @@ public class UserServerImpl implements UserService {
 
         if (UtilsConfiguration.isImage(Objects.requireNonNull(file.getContentType()))){
 
-            UploadFileDetails uploadFileDetails = fileStorageService.storeFile(file, "USER_IMG");
-
-             user.setImage(uploadFileDetails.getFileDisplayUri());
+            fileStorageService.storeFile(file, "USER_IMG");
+             user.setImage(file.getOriginalFilename());
              userRepository.save(user);
+
         }else{
             throw new RuntimeException("mahiyech image****************");
         }
+    }
+
+    @Override
+    public Resource serveImage(String fileName) {
+        fileName = "USER_IMG/"+fileName;
+        return fileStorageService.loadFileAsResource(fileName);
+    }
+
+    @Override
+    public void uploadCv(MultipartFile file, Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                ()-> new NotFoundException("user is not exist"));
+
+        if (UtilsConfiguration.isPdf(Objects.requireNonNull(file.getContentType()))){
+
+            fileStorageService.storeFile(file, "USER_CV");
+            user.setCv(file.getOriginalFilename());
+            userRepository.save(user);
+
+        }else{
+            throw new RuntimeException("mahouwech PDF image****************");
+        }
+    }
+
+    @Override
+    public Resource serveCv(String fileName) {
+        fileName = "USER_CV/"+fileName;
+        return fileStorageService.loadFileAsResource(fileName);
     }
 
 

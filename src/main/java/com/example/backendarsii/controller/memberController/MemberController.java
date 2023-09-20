@@ -8,6 +8,8 @@ import com.example.backendarsii.service.UserService;
 import com.example.backendarsii.utils.Constants;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,11 +61,37 @@ public class MemberController {
         userService.changePassword(request, user.getId());
         return ResponseEntity.ok("Password changed successfully !!");
     }
-    @PostMapping(value = "uploadImage{userId}")
-    public ResponseEntity<String> storeImage(@PathParam("file") MultipartFile file, @PathVariable Long userId){
+
+    @PostMapping(value = "uploadImage/{userId}")
+    public ResponseEntity<String> storeImage(@PathParam("file") MultipartFile file,@PathVariable Long userId){
         userService.uploadImage(file,userId);
         return ResponseEntity.ok("upload success");
     }
+
+    @GetMapping("img/{filename:.+}")
+    public ResponseEntity<Resource> serveImage(@PathVariable String filename) {
+
+
+        Resource resource = userService.serveImage(filename);
+        return   ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Modify the content type as needed
+                .body(resource);
+    }
+    @PostMapping(value = "uploadCV/{userId}")
+    public ResponseEntity<String> storeCV(@PathParam("file") MultipartFile file,@PathVariable Long userId){
+        userService.uploadCv(file,userId);
+        return ResponseEntity.ok("upload success");
+    }
+
+    @GetMapping("CV/{filename:.+}")
+    public ResponseEntity<Resource> serveCV(@PathVariable String filename) {
+
+        Resource resource = userService.serveCv(filename);
+        return   ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "application/pdf") // Modify the content type as needed
+                .body(resource);
+    }
+
 
 
 }

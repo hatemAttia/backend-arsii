@@ -6,10 +6,14 @@ import com.example.backendarsii.service.PartnerService;
 import com.example.backendarsii.utils.Constants;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -50,6 +54,21 @@ public class PartnerAdminController {
     public ResponseEntity<String> deletePartner(@PathVariable Long id) {
         partnerService.deletePartner(id);
         return ResponseEntity.ok("delete success !");
+    }
+    @PostMapping(value = "uploadImage/{partnerId}")
+    public ResponseEntity<String> storeImage(@PathParam("file") MultipartFile file, @PathVariable Long partnerId){
+        partnerService.uploadImage(file,partnerId);
+        return ResponseEntity.ok("upload success");
+    }
+
+    @GetMapping("img/{filename:.+}")
+    public ResponseEntity<Resource> serveImage(@PathVariable String filename) {
+
+
+        Resource resource = partnerService.serveImage(filename);
+        return   ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                .body(resource);
     }
 
 

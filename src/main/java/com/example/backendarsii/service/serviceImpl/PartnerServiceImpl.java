@@ -1,23 +1,33 @@
 package com.example.backendarsii.service.serviceImpl;
 
+import com.example.backendarsii.config.UtilsConfiguration;
 import com.example.backendarsii.dto.requestDto.PartnerRequest;
 import com.example.backendarsii.dto.responseDto.PartnerResponse;
+import com.example.backendarsii.entity.Event;
 import com.example.backendarsii.entity.Partner;
 import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.PartnerRepository;
 import com.example.backendarsii.service.PartnerService;
+import com.example.backendarsii.utils.FileStorageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class PartnerServiceImpl implements PartnerService {
 
     private final PartnerRepository partnerRepository;
+    @Autowired
+    private FileStorageService fileStorageService;
+
 
     @Override
     public void addPartner(PartnerRequest partnerRequest) {
@@ -83,5 +93,27 @@ public class PartnerServiceImpl implements PartnerService {
             throw new NotFoundException(String.format("this id[%s] is not exist", id));
         }
         partnerRepository.deleteById(id);
+    }
+
+    @Override
+    public void uploadImage(MultipartFile file, Long id) {
+        Partner partner = partnerRepository.findById(id).orElseThrow(
+                ()-> new NotFoundException("partner is not exist"));
+
+        if (UtilsConfiguration.isImage(Objects.requireNonNull(file.getContentType()))){
+
+            fileStorageService.storeFile(file, "PARTNER_IMG");
+            partner.setImage(file.getOriginalFilename());
+            partnerRepository.save(partner);
+
+        }else{
+            throw new RuntimeException("mahiyech image****************");
+        }
+    }
+
+    @Override
+    public Resource serveImage(String fileName) {
+        fileName = "PARTNER_IMG/"+fileName;
+        return fileStorageService.loadFileAsResource(fileName);
     }
 }

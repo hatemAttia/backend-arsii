@@ -48,10 +48,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .universityOrCompany(request.getUniversityOrCompany())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .deleted(false)
+                .status(true)
                 .role(Role.MEMBER)
                 .post(Post.MEMBER)
                 .office(request.getOffice())
-                .image(request.getImage())
                 .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);

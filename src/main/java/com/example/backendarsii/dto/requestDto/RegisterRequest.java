@@ -44,7 +44,7 @@ public class RegisterRequest {
     private String universityOrCompany;
     @Enumerated(EnumType.STRING)
     private Office office;
-    private String image;
+
 
 
 }

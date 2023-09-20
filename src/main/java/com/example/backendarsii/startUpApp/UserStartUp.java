@@ -38,8 +38,7 @@ public class UserStartUp implements CommandLineRunner {
 
                 "Batal",
                 "fi dar",
-                Office.OFFICE_SOUSSE,
-                "https://www.overleaf.com/login?"));
+                Office.OFFICE_SOUSSE));
         authenticationService.register(new RegisterRequest("ali",
                 "salem",
                 "alisalem",
@@ -51,8 +50,7 @@ public class UserStartUp implements CommandLineRunner {
                 "sousse",
                 "ingenieur",
                 "fi dar",
-                Office.OFFICE_SOUSSE,
-                "https://www.overleaf.com/login?"));
+                Office.OFFICE_SOUSSE));
         userRepository.save(new User(
                 null,
                 "mohamed",
@@ -69,12 +67,15 @@ public class UserStartUp implements CommandLineRunner {
                 Post.GENERAL_SECRETARY,
                 Office.OFFICE_SOUSSE,
                 "https://www.overleaf.com/login?",
+                "aez",
                 null,
                 null,
                 null,
                 Role.MEMBER,
                 null,
+                Boolean.TRUE,
                 Boolean.FALSE
+
 
 
         ));
@@ -94,12 +95,15 @@ public class UserStartUp implements CommandLineRunner {
                 Post.NATIONAL_PRESIDENT,
                 Office.OFFICE_SOUSSE,
                 "https://www.overleaf.com/login?",
+                "aze",
                 null,
                 null,
                 null,
                 Role.ADMIN,
                 null,
+                Boolean.TRUE,
                 Boolean.FALSE
+
 
 
         ));

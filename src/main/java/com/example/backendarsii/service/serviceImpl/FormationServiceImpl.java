@@ -1,23 +1,33 @@
 package com.example.backendarsii.service.serviceImpl;
 
+import com.example.backendarsii.config.UtilsConfiguration;
 import com.example.backendarsii.dto.requestDto.FormationRequest;
 import com.example.backendarsii.dto.requestDto.UpdateFormationRequest;
 import com.example.backendarsii.dto.responseDto.FormationResponse;
 import com.example.backendarsii.entity.Formation;
+
 import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.FormationRepository;
 import com.example.backendarsii.service.FormationService;
+import com.example.backendarsii.utils.FileStorageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class FormationServiceImpl implements FormationService {
 
     private final FormationRepository formationRepository;
+    @Autowired
+    private FileStorageService fileStorageService;
+
 
     @Override
     public void addFormation(FormationRequest formationRequest, boolean status) {
@@ -93,5 +103,27 @@ public class FormationServiceImpl implements FormationService {
         }
         formationRepository.deleteById(id);
 
+    }
+
+    @Override
+    public void uploadImage(MultipartFile file, Long id) {
+        Formation formation = formationRepository.findById(id).orElseThrow(
+                ()-> new NotFoundException("formation is not exist"));
+
+        if (UtilsConfiguration.isImage(Objects.requireNonNull(file.getContentType()))){
+
+            fileStorageService.storeFile(file, "FORMATION_IMG");
+            formation.setImage(file.getOriginalFilename());
+            formationRepository.save(formation);
+
+        }else{
+            throw new RuntimeException("mahiyech image****************");
+        }
+    }
+
+    @Override
+    public Resource serveImage(String fileName) {
+        fileName = "FORMATION_IMG/"+fileName;
+        return fileStorageService.loadFileAsResource(fileName);
     }
 }

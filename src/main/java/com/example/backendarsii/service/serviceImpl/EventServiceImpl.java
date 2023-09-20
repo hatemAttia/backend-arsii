@@ -1,19 +1,26 @@
 package com.example.backendarsii.service.serviceImpl;
 
+import com.example.backendarsii.config.UtilsConfiguration;
 import com.example.backendarsii.dto.requestDto.EventRequest;
 import com.example.backendarsii.dto.requestDto.UpdateEventRequest;
 import com.example.backendarsii.dto.responseDto.EventResponse;
 import com.example.backendarsii.entity.Event;
+import com.example.backendarsii.entity.Opportunity;
 import com.example.backendarsii.entity.Partner;
 import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.EventRepository;
 import com.example.backendarsii.repository.PartnerRepository;
 import com.example.backendarsii.service.EventService;
+import com.example.backendarsii.utils.FileStorageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +28,9 @@ public class EventServiceImpl implements EventService {
 
     private final PartnerRepository partnerRepository;
     private final EventRepository eventRepository;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Override
     public void addEvent(EventRequest eventRequest, boolean status) {
@@ -98,6 +108,27 @@ public class EventServiceImpl implements EventService {
     @Override
     public void deleteEvent(Long id) {
         eventRepository.deleteById(id);
+    }
 
+    @Override
+    public void uploadImage(MultipartFile file, Long id) {
+        Event event = eventRepository.findById(id).orElseThrow(
+                ()-> new NotFoundException("event is not exist"));
+
+        if (UtilsConfiguration.isImage(Objects.requireNonNull(file.getContentType()))){
+
+            fileStorageService.storeFile(file, "EVENT_IMG");
+            event.setImage(file.getOriginalFilename());
+            eventRepository.save(event);
+
+        }else{
+            throw new RuntimeException("mahiyech image****************");
+        }
+    }
+
+    @Override
+    public Resource serveImage(String fileName) {
+        fileName = "EVENT_IMG/"+fileName;
+        return fileStorageService.loadFileAsResource(fileName);
     }
 }
