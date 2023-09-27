@@ -22,7 +22,11 @@ public class UpdateEventRequest {
     private String description;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime date;
-    private String image;
+
+    private Long maxOfParticipants;
+    private String formateur;
+    private Long price;
+
     @NotBlank(message = "location is required")
     private String location;
     @Enumerated(EnumType.STRING)

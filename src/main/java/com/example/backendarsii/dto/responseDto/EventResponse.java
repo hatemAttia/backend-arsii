@@ -17,11 +17,15 @@ public class EventResponse {
     private String description;
     private LocalDateTime date;
     private String image;
+    private Long maxOfParticipants;
     private Long numberOfParticipants;
+    private String formateur;
     private String location;
+    private Long price;
     private EventType type;
     private PartnerResponse partner;
     private boolean status;
+    private boolean isActivity;
     private Instant createdAt;
     private Instant updatedAt;
 
@@ -37,6 +41,7 @@ public class EventResponse {
                     .location(event.getLocation())
                     .type(event.getType())
                     .status(event.isStatus())
+                    .isActivity(event.isActivity())
                     .createdAt(event.getCreatedAt())
                     .updatedAt(event.getUpdatedAt())
                     .build();

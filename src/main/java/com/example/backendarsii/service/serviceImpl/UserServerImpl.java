@@ -250,6 +250,12 @@ public class UserServerImpl implements UserService {
 
         Root<User> root = criteriaQuery.from(User.class);
 
+        if (searchAdmin.getId() != null) {
+            Predicate idPredicate = criteriaBuilder
+                    .equal(root.get("id"), searchAdmin.getId());
+            predicates.add(idPredicate);
+        }
+
         if (searchAdmin.getFirstName() != null) {
             Predicate firstNamePredicate = criteriaBuilder
                     .like(root.get("firstName"), "%" + searchAdmin.getFirstName() + "%");

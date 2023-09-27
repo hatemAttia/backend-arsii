@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +35,9 @@ public class UserEventServiceImpl implements UserEventService {
         Event event = eventRepository.findById(request.getEventId()).orElseThrow(
                 () -> new NotFoundException(String.format("this eventId [%s] is not exist", request.getEventId())));
 
+        if (Objects.equals(event.getNumberOfParticipants(), event.getMaxOfParticipants())) {
+            throw new RuntimeException("akahaw ba3 w rawa7 §§§§§§§§§§§µµµµµµµ*****");
+        }
         event.setNumberOfParticipants(event.getNumberOfParticipants() + 1);
 
         userEventRepository.save(UserEvent.builder()

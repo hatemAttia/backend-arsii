@@ -6,6 +6,7 @@ import com.example.backendarsii.dto.requestDto.UpdateEventRequest;
 import com.example.backendarsii.dto.responseDto.EventResponse;
 import com.example.backendarsii.service.EventService;
 import com.example.backendarsii.utils.Constants;
+import com.example.backendarsii.utils.enumData.EventType;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -29,19 +30,20 @@ public class EventAdminController {
 
     @PostMapping
     public ResponseEntity<String> createEvent(@RequestBody EventRequest eventRequest) {
-        eventService.addEvent(eventRequest, true);
+        eventService.addEvent(eventRequest);
         return ResponseEntity.ok("save success !!");
     }
 
     @GetMapping
-    public ResponseEntity<List<EventResponse>> getAllEvent() {
-        return ResponseEntity.ok(eventService.getAllEvent());
+    public ResponseEntity<List<EventResponse>> getAllEvent(@RequestParam  EventType type) {
+        return ResponseEntity.ok(eventService.getAllEvent(type));
+    }
+    @GetMapping(value = "/activity")
+    public ResponseEntity<List<EventResponse>> getAllActivity() {
+        return ResponseEntity.ok(eventService.getAllActivity());
     }
 
-    @GetMapping(value = "/suggest")
-    public ResponseEntity<List<EventResponse>> getAllSuggestEvent() {
-        return ResponseEntity.ok(eventService.getAllSuggestEvent());
-    }
+
 
     @GetMapping(value = "{id}")
     public ResponseEntity<EventResponse> getEventById(@PathVariable Long id) {
@@ -70,11 +72,11 @@ public class EventAdminController {
     @GetMapping("img/{filename:.+}")
     public ResponseEntity<Resource> serveImage(@PathVariable String filename) {
 
-
         Resource resource = eventService.serveImage(filename);
         return   ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
                 .body(resource);
+
     }
 
 }

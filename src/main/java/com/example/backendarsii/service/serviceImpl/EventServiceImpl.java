@@ -12,6 +12,7 @@ import com.example.backendarsii.repository.EventRepository;
 import com.example.backendarsii.repository.PartnerRepository;
 import com.example.backendarsii.service.EventService;
 import com.example.backendarsii.utils.FileStorageService;
+import com.example.backendarsii.utils.enumData.EventType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -33,7 +34,7 @@ public class EventServiceImpl implements EventService {
     private FileStorageService fileStorageService;
 
     @Override
-    public void addEvent(EventRequest eventRequest, boolean status) {
+    public void addEvent(EventRequest eventRequest) {
         Partner partner = null;
         if (eventRequest.getPartnerId() != null) {
             partner = partnerRepository.findById(eventRequest.getPartnerId()).orElseThrow(
@@ -43,18 +44,30 @@ public class EventServiceImpl implements EventService {
                 .title(eventRequest.getTitle())
                 .description(eventRequest.getDescription())
                 .date(eventRequest.getDate())
-                .image(eventRequest.getImage())
+                .maxOfParticipants(eventRequest.getMaxOfParticipants())
+                .formateur(eventRequest.getFormateur())
+                .price(eventRequest.getPrice())
                 .location(eventRequest.getLocation())
                 .type(eventRequest.getType())
                 .partner(partner)
                 .numberOfParticipants(0L)
-                .status(status).build());
+                .status(true).build());
 
     }
 
     @Override
-    public List<EventResponse> getAllEvent() {
-        List<Event> events = eventRepository.findAllEvent();
+    public List<EventResponse> getAllEvent(EventType type) {
+        List<Event> events = eventRepository.findAllEvent(type);
+        List<EventResponse> eventResponses = new ArrayList<>();
+        for (Event event : events) {
+            EventResponse eventResponse = EventResponse.makeEvent(event);
+            eventResponses.add(eventResponse);
+        }
+        return eventResponses;
+    }
+    @Override
+    public List<EventResponse> getAllActivity() {
+        List<Event> events = eventRepository.findAllActivity();
         List<EventResponse> eventResponses = new ArrayList<>();
         for (Event event : events) {
             EventResponse eventResponse = EventResponse.makeEvent(event);
@@ -63,16 +76,7 @@ public class EventServiceImpl implements EventService {
         return eventResponses;
     }
 
-    @Override
-    public List<EventResponse> getAllSuggestEvent() {
-        List<Event> events = eventRepository.findAllSuggestEvent();
-        List<EventResponse> eventResponses = new ArrayList<>();
-        for (Event event : events) {
-            EventResponse eventResponse = EventResponse.makeEvent(event);
-            eventResponses.add(eventResponse);
-        }
-        return eventResponses;
-    }
+
 
     @Override
     public EventResponse getEventById(Long id) {
@@ -95,7 +99,9 @@ public class EventServiceImpl implements EventService {
         event.setTitle(updateEventRequest.getTitle());
         event.setDescription(updateEventRequest.getDescription());
         event.setDate(updateEventRequest.getDate());
-        event.setImage(updateEventRequest.getImage());
+        event.setMaxOfParticipants(updateEventRequest.getMaxOfParticipants());
+        event.setPrice(updateEventRequest.getPrice());
+        event.setFormateur(updateEventRequest.getFormateur());
         event.setLocation(updateEventRequest.getLocation());
         event.setType(updateEventRequest.getType());
         event.setPartner(partner);

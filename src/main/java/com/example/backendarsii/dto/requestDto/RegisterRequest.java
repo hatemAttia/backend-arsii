@@ -30,7 +30,7 @@ public class RegisterRequest {
     private String userName;
     @Email(message = "your email is not valid")
     private String email;
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&.])[A-Za-z\\d@$!%*#?&.]{8,}$",
+    @Pattern(regexp = "^.{8,}$",
             message = "The password must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special symbol.")
     private String password;
     @Enumerated(EnumType.STRING)

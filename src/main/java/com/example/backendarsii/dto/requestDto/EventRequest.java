@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -23,12 +24,14 @@ public class EventRequest {
     private String description;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime date;
-    private String image;
+    private Long maxOfParticipants;
     @NotBlank(message = "location is required")
     private String location;
-    @Enumerated(EnumType.STRING)
+    private String formateur;
     private EventType type;
+    private Long price;
     private Long partnerId;
+    private boolean isActivity;
 
 
 }

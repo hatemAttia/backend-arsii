@@ -5,6 +5,7 @@ import com.example.backendarsii.dto.requestDto.EventRequest;
 import com.example.backendarsii.dto.responseDto.EventResponse;
 import com.example.backendarsii.service.EventService;
 import com.example.backendarsii.utils.Constants;
+import com.example.backendarsii.utils.enumData.EventType;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,12 @@ public class EventMemberController {
 
     private final EventService eventService;
 
-    @PostMapping
-    public ResponseEntity<String> suggestEvent(@RequestBody @Valid EventRequest eventRequest) {
-        eventService.addEvent(eventRequest, false);
-        return ResponseEntity.ok("save success !!");
-    }
 
-    @GetMapping
-    public ResponseEntity<List<EventResponse>> getAllEvent() {
 
-        return ResponseEntity.ok(eventService.getAllEvent());
+    @GetMapping(value = "{type}")
+    public ResponseEntity<List<EventResponse>> getAllEvent(@PathVariable EventType type) {
+
+        return ResponseEntity.ok(eventService.getAllEvent(type));
 
     }
 

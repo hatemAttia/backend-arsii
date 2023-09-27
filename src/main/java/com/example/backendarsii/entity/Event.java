@@ -31,13 +31,17 @@ public class Event {
     private String description;
     private LocalDateTime date;
     private String image;
+    private Long maxOfParticipants;
     private Long numberOfParticipants;
     private String location;
     @Enumerated(EnumType.STRING)
     private EventType type;
+    private String formateur;
+    private Long price;
     @ManyToOne(optional = true)
     private Partner partner;
     private boolean status;
+    private boolean isActivity;
     @CreationTimestamp
     private Instant createdAt;
     @UpdateTimestamp
