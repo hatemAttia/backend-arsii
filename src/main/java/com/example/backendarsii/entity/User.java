@@ -5,12 +5,14 @@ import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
 import com.example.backendarsii.utils.enumData.Post;
 import com.example.backendarsii.utils.enumData.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +20,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -40,6 +42,7 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    private Date dateOfBirth;
     private String phoneNumber;
     private String region;
     private String job;
@@ -49,6 +52,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Office office;
     private String image;
+    private String cv;
     @CreationTimestamp
     private Instant expiresAt;
     @CreationTimestamp
@@ -57,9 +61,9 @@ public class User implements UserDetails {
     private Instant updatedAt;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private String otp;
+    private boolean status = Boolean.TRUE;
     private boolean deleted = Boolean.FALSE;
-
-
 
 
     @Override
@@ -79,9 +83,9 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        if (role == Role.MEMBER){
-        // return true if today < expires_at
-        return expiresAt.isAfter(Instant.now());
+        if (role == Role.MEMBER) {
+            // return true if today < expires_at
+            return (expiresAt.isAfter(Instant.now()) && status);
         }
         return true;
     }

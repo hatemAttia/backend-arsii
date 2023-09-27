@@ -8,13 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 @Data
 @Builder
@@ -29,11 +29,12 @@ public class UpdateUserRequest {
     private String lastName;
     @NotBlank(message = "Username is required")
     private String userName;
-    @Email(message ="your email is not valid" )
+    @Email(message = "your email is not valid")
     private String email;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @Pattern(regexp = "^[0-9]{8}$",message = "phone number not valid")
+    private Date dateOfBirth;
+    @Pattern(regexp = "^[0-9]{8}$", message = "phone number not valid")
     private String phoneNumber;
     @NotBlank(message = "your region is required")
     private String region;
@@ -43,7 +44,6 @@ public class UpdateUserRequest {
     private String universityOrCompany;
     @Enumerated(EnumType.STRING)
     private Office office;
-    @URL(message = "this UrlImage is not Valid")
     private String image;
     @Enumerated(EnumType.STRING)
     private Post post;

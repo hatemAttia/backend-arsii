@@ -1,10 +1,10 @@
 package com.example.backendarsii.dto.responseDto;
 
+import com.example.backendarsii.entity.User;
 import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
 import com.example.backendarsii.utils.enumData.Post;
 import com.example.backendarsii.utils.enumData.Role;
-import com.example.backendarsii.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +13,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.time.Instant;
+import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class UserResponse {
 
     private Long id;
     private String firstName;
@@ -27,6 +28,7 @@ public class UserDto {
     private String email;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    private Date dateOfBirth;
     private String phoneNumber;
     private String region;
     private String job;
@@ -36,14 +38,16 @@ public class UserDto {
     @Enumerated(EnumType.STRING)
     private Office office;
     private String image;
+    private String cv;
+    private boolean status;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant expiresAt;
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static UserDto makeUser(User user){
-        return UserDto.builder()
+    public static UserResponse makeUser(User user) {
+        return UserResponse.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -54,9 +58,12 @@ public class UserDto {
                 .universityOrCompany(user.getUniversityOrCompany())
                 .phoneNumber(user.getPhoneNumber())
                 .region(user.getRegion())
+                .dateOfBirth(user.getDateOfBirth())
                 .post(user.getPost())
                 .office(user.getOffice())
                 .image(user.getImage())
+                .cv(user.getCv())
+                .status(user.isStatus())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .expiresAt(user.getExpiresAt())

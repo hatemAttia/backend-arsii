@@ -2,7 +2,7 @@ package com.example.backendarsii.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class NotFoundException extends ApiBaseException{
+public class NotFoundException extends ApiBaseException {
     public NotFoundException(String message) {
         super(message);
     }

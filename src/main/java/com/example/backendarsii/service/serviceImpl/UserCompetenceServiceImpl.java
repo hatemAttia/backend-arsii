@@ -1,9 +1,8 @@
 package com.example.backendarsii.service.serviceImpl;
 
 import com.example.backendarsii.dto.requestDto.UserCompetenceRequest;
-import com.example.backendarsii.dto.responseDto.CompetenceResponse;
 import com.example.backendarsii.dto.responseDto.UserCompetenceResponse;
-import com.example.backendarsii.dto.responseDto.UserDto;
+import com.example.backendarsii.dto.responseDto.UserResponse;
 import com.example.backendarsii.entity.Competence;
 import com.example.backendarsii.entity.User;
 import com.example.backendarsii.entity.UserCompetence;
@@ -28,17 +27,18 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
     private final UserRepository userRepository;
     private final CompetenceRepository competenceRepository;
     private final UserCompetenceRepository userCompetenceRepository;
+
     @Override
     public void addUserCompetence(UserCompetenceRequest userCompetenceRequest) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
         Optional<User> user = userRepository.findByUserName(currentUserName);
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             throw new NotFoundException("mafamech User *************");
         }
         Competence competence = competenceRepository.findById(userCompetenceRequest.getCompetenceId()).orElseThrow(
-                ()-> new NotFoundException(String.format("this Competence with id [%s] is not exist",userCompetenceRequest.getCompetenceId())));
+                () -> new NotFoundException(String.format("this Competence with id [%s] is not exist", userCompetenceRequest.getCompetenceId())));
         UserCompetence userCompetence = UserCompetence.builder()
                 .competence(competence)
                 .user(user.get())
@@ -49,12 +49,12 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
     }
 
     @Override
-    public void updateUserCompetence(Long id , UserCompetenceRequest userCompetenceRequest) {
+    public void updateUserCompetence(Long id, UserCompetenceRequest userCompetenceRequest) {
 
         UserCompetence userCompetence = userCompetenceRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException(String.format("this UserCompetence with id [%s] is not exist",id)));
+                () -> new NotFoundException(String.format("this UserCompetence with id [%s] is not exist", id)));
         Competence competence = competenceRepository.findById(userCompetenceRequest.getCompetenceId()).orElseThrow(
-                ()-> new NotFoundException(String.format("this Competence with id [%s] is not exist",userCompetenceRequest.getCompetenceId())));
+                () -> new NotFoundException(String.format("this Competence with id [%s] is not exist", userCompetenceRequest.getCompetenceId())));
 
         userCompetence.setCompetence(competence);
         userCompetence.setLevel(userCompetenceRequest.getLevel());
@@ -67,20 +67,20 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
 
         List<UserCompetence> userCompetences = userCompetenceRepository.findAllByUserId(id);
         List<UserCompetenceResponse> userCompetenceResponses = new ArrayList<>();
-            for (UserCompetence userCompetence : userCompetences) {
-                UserCompetenceResponse userCompetenceResponse = UserCompetenceResponse.makeUserCompetence(userCompetence);
-                userCompetenceResponses.add(userCompetenceResponse);
-            }
+        for (UserCompetence userCompetence : userCompetences) {
+            UserCompetenceResponse userCompetenceResponse = UserCompetenceResponse.makeUserCompetence(userCompetence);
+            userCompetenceResponses.add(userCompetenceResponse);
+        }
         return userCompetenceResponses;
     }
 
     @Override
-    public List<UserDto> getAllUserByCompetence(Long id) {
+    public List<UserResponse> getAllUserByCompetence(Long id) {
 
         List<UserCompetence> userCompetences = userCompetenceRepository.findAllByCompetenceId(id);
-        List<UserDto> userDtos = new ArrayList<>();
-        for (UserCompetence userCompetence  : userCompetences) {
-            UserDto userDto = UserDto.makeUser(userCompetence.getUser());
+        List<UserResponse> userDtos = new ArrayList<>();
+        for (UserCompetence userCompetence : userCompetences) {
+            UserResponse userDto = UserResponse.makeUser(userCompetence.getUser());
             userDtos.add(userDto);
         }
         return userDtos;
@@ -88,8 +88,8 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
 
     @Override
     public void deleteUserCompetence(Long id) {
-        if (!userCompetenceRepository.existsById(id)){
-            throw new NotFoundException(String.format("this userCompetence with id [%s] is not exist",id));
+        if (!userCompetenceRepository.existsById(id)) {
+            throw new NotFoundException(String.format("this userCompetence with id [%s] is not exist", id));
         }
         userCompetenceRepository.deleteById(id);
 

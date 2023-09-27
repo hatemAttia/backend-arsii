@@ -8,10 +8,10 @@ import lombok.Data;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.time.Instant;
 
 @Data
 public class SearchAdmin {
+    private Long id;
     private String firstName;
     private String lastName;
     @Enumerated(EnumType.STRING)

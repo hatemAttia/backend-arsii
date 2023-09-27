@@ -1,12 +1,10 @@
 package com.example.backendarsii.dto.responseDto;
 
 import com.example.backendarsii.entity.Category;
-import com.example.backendarsii.entity.Competence;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.List;
 
 @Data
 @Builder
@@ -19,8 +17,7 @@ public class CategoryResponse {
     private Instant updatedAt;
 
 
-
-    public static CategoryResponse makeCategory(Category category){
+    public static CategoryResponse makeCategory(Category category) {
 
 
         return CategoryResponse.builder()

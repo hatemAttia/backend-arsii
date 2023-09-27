@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -15,6 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -31,8 +31,8 @@ public class swaggerConfig {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
-                .securitySchemes(Arrays.asList(apiKey()))
-                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(List.of(apiKey()))
+                .securityContexts(Collections.singletonList(securityContext()))
                 .apiInfo(apiInfo())
                 .pathMapping("/")
                 .useDefaultResponseMessages(false)
@@ -45,7 +45,7 @@ public class swaggerConfig {
                 .title("Swagger with Spring Boot + Security")
                 .version("1.0.0")
                 .description("Your Description")
-                .contact(new Contact("Contact Name", "Contact_URL","contact@email.com"))
+                .contact(new Contact("Contact Name", "Contact_URL", "contact@email.com"))
                 .build();
     }
 
@@ -61,6 +61,6 @@ public class swaggerConfig {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
+        return List.of(new SecurityReference("JWT", authorizationScopes));
     }
 }
