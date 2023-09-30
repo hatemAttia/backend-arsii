@@ -21,9 +21,5 @@ public class ClubRequest {
     private String location;
     private String description;
     private String contact;
-    private Date date;
-    private String member;
-    @Enumerated(EnumType.STRING)
-    private Post post;
     private boolean status;
 }

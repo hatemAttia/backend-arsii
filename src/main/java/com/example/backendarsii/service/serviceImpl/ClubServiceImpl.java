@@ -46,9 +46,6 @@ public class ClubServiceImpl implements ClubService {
                 .location(clubRequest.getLocation())
                 .description(clubRequest.getDescription())
                 .contact(clubRequest.getContact())
-                .date(clubRequest.getDate())
-                .member(clubRequest.getMember())
-                .post(clubRequest.getPost())
                 .status(clubRequest.isStatus())
                 .build();
         clubRepository.save(club);
@@ -64,9 +61,6 @@ public class ClubServiceImpl implements ClubService {
             existingClub.setLogo(clubRequest.getLogo());
             existingClub.setLocation(clubRequest.getLocation());
             existingClub.setContact(clubRequest.getContact());
-            existingClub.setDate(clubRequest.getDate());
-            existingClub.setMember(clubRequest.getMember());
-            existingClub.setPost(clubRequest.getPost());
             existingClub.setStatus(clubRequest.isStatus());
             clubRepository.save(existingClub);
             return ClubResponse.makeClub(existingClub);
