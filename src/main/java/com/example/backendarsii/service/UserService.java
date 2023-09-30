@@ -7,6 +7,8 @@ import com.example.backendarsii.dto.responseDto.UserResponse;
 import com.example.backendarsii.dto.searchRequest.SearchAdmin;
 import com.example.backendarsii.dto.searchRequest.SearchMember;
 import com.example.backendarsii.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 
@@ -28,11 +30,11 @@ public interface UserService {
 
     void enableMember(Long id);
 
-    void disableAccount(Long id);
 
-    List<UserResponse> getMemberByFilter(SearchMember serachUserDTO);
 
-    List<UserResponse> getAllUserByFilter(SearchAdmin searchAdmin);
+
+
+    Page<UserResponse> getAllUserByFilter(SearchAdmin searchAdmin, Pageable pageable);
 
     void changePassword(PasswordChangeRequest passwordChangeRequest, Long id);
 
@@ -41,11 +43,7 @@ public interface UserService {
 
      void resetPasswordWithOTP(String username, String otp, String newPassword) ;
 
-     void uploadImage(MultipartFile file,Long id);
-     Resource serveImage(String fileName);
 
-    void uploadCv(MultipartFile file,Long id);
-    Resource serveCv(String fileName);
 
 
 }

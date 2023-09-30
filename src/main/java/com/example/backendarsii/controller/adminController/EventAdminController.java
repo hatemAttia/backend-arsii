@@ -63,20 +63,6 @@ public class EventAdminController {
         eventService.deleteEvent(id);
         return ResponseEntity.ok("delete success !!");
     }
-    @PostMapping(value = "uploadImage/{eventId}")
-    public ResponseEntity<String> storeImage(@PathParam("file") MultipartFile file, @PathVariable Long eventId){
-        eventService.uploadImage(file,eventId);
-        return ResponseEntity.ok("upload success");
-    }
 
-    @GetMapping("img/{filename:.+}")
-    public ResponseEntity<Resource> serveImage(@PathVariable String filename) {
-
-        Resource resource = eventService.serveImage(filename);
-        return   ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                .body(resource);
-
-    }
 
 }

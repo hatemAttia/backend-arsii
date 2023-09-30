@@ -40,6 +40,8 @@ public class UserResponse {
     private String image;
     private String cv;
     private boolean status;
+    private boolean isPaid;
+
     private Instant createdAt;
     private Instant updatedAt;
     private Instant expiresAt;
@@ -64,6 +66,7 @@ public class UserResponse {
                 .image(user.getImage())
                 .cv(user.getCv())
                 .status(user.isStatus())
+                .isPaid(user.isPaid())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .expiresAt(user.getExpiresAt())

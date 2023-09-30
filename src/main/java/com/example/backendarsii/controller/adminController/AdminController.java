@@ -10,11 +10,15 @@ import com.example.backendarsii.service.UserService;
 import com.example.backendarsii.utils.FileStorageService;
 import com.example.backendarsii.utils.Constants;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +45,11 @@ public class AdminController {
 
 
     @PostMapping(value = "/filter")
-    public ResponseEntity<List<UserResponse>> getAllUserByFilter(@RequestBody SearchAdmin request) {
-        return ResponseEntity.ok(userService.getAllUserByFilter(request));
+    public ResponseEntity<Page<UserResponse>> getAllUserByFilter(@RequestBody SearchAdmin request,
+                                                                   Pageable pageable) {
+        Page<UserResponse> usersPage = userService.getAllUserByFilter(request, pageable);
+
+        return ResponseEntity.ok(usersPage);
     }
 
     @PutMapping(value = "/enable/{id}")
@@ -50,11 +57,7 @@ public class AdminController {
         userService.enableMember(id);
         return ResponseEntity.ok("This Account enabled with success !!!!!");
     }
-    @PutMapping(value = "/disable/{id}")
-    public ResponseEntity<String> disableMember(@PathVariable(name = "id") Long id) {
-        userService.disableAccount(id);
-        return ResponseEntity.ok("This Account is disabled !!!!!");
-    }
+
 
     @DeleteMapping(value = "{id}")
     public ResponseEntity<String> deleteMember(@PathVariable(name = "id") Long id) {
@@ -98,36 +101,7 @@ public class AdminController {
 
 
 
-    @PostMapping(value = "uploadImage/{userId}")
-    public ResponseEntity<String> storeImage(@PathParam("file") MultipartFile file,@PathVariable Long userId){
-        userService.uploadImage(file,userId);
-        return ResponseEntity.ok("upload success");
-    }
 
-    @GetMapping("img/{filename:.+}")
-    public ResponseEntity<Resource> serveImage(@PathVariable String filename) {
-
-
-      Resource resource = userService.serveImage(filename);
-     return   ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Modify the content type as needed
-                .body(resource);
-    }
-    @PostMapping(value = "uploadCV/{userId}")
-    public ResponseEntity<String> storeCV(@PathParam("file") MultipartFile file,@PathVariable Long userId){
-        userService.uploadCv(file,userId);
-        return ResponseEntity.ok("upload success");
-    }
-
-    @GetMapping("CV/{filename:.+}")
-    public ResponseEntity<Resource> serveCV(@PathVariable String filename) {
-
-
-        Resource resource = userService.serveCv(filename);
-        return   ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "application/pdf") // Modify the content type as needed
-                .body(resource);
-    }
 
 
 

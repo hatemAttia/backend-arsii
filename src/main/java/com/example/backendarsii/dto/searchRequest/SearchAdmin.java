@@ -4,12 +4,14 @@ import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
 import com.example.backendarsii.utils.enumData.Post;
 import com.example.backendarsii.utils.enumData.Role;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class SearchAdmin {
     private Long id;
     private String firstName;
@@ -23,7 +25,8 @@ public class SearchAdmin {
     private Post post;
     @Enumerated(EnumType.STRING)
     private Office office;
-    private boolean expired = Boolean.FALSE;
+    private boolean status = Boolean.FALSE;
+    private boolean isPaid ;
     @Enumerated(EnumType.STRING)
     private Role role;
 

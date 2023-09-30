@@ -22,7 +22,6 @@ public interface EventService {
     void updateEvent(Long id, UpdateEventRequest updateEventRequest);
 
     void deleteEvent(Long id);
-    void uploadImage(MultipartFile file, Long id);
-    Resource serveImage(String fileName);
+
 
 }

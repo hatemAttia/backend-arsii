@@ -21,6 +21,9 @@ import com.example.backendarsii.utils.enumData.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -53,8 +56,7 @@ public class UserServerImpl implements UserService {
     private OtpUtil otpUtil;
     @Autowired
     private EmailUtil emailUtil;
-    @Autowired
-    private FileStorageService fileStorageService;
+
 
 
     @Override
@@ -157,93 +159,18 @@ public class UserServerImpl implements UserService {
     public void enableMember(Long id) {
 
         User user = userRepository.findById(id).orElseThrow();
-        Calendar today = Calendar.getInstance();
-        today.add(Calendar.YEAR, 1);
-        user.setExpiresAt(today.toInstant());
-
-        userRepository.save(user);
-
-    }
-
-    @Override
-    public void disableAccount(Long id) {
-        User user = userRepository.findById(id).orElseThrow();
+        user.setPaid(true);
         user.setStatus(!user.isStatus());
         userRepository.save(user);
+
     }
 
 
-    @Override
-    public List<UserResponse> getMemberByFilter(SearchMember serachUserDTO) {
 
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-        List<Predicate> predicates = new ArrayList<>();
 
-        Root<User> root = criteriaQuery.from(User.class);
-
-        if (serachUserDTO.getFirstName() != null) {
-            Predicate firstNamePredicate = criteriaBuilder
-                    .like(root.get("firstName"), "%" + serachUserDTO.getFirstName() + "%");
-            predicates.add(firstNamePredicate);
-        }
-        if (serachUserDTO.getLastName() != null) {
-            Predicate lastNamePredicate = criteriaBuilder
-                    .like(root.get("lastName"), "%" + serachUserDTO.getLastName() + "%");
-            predicates.add(lastNamePredicate);
-        }
-        if (serachUserDTO.getGender() != null) {
-            Predicate genderPredicate = criteriaBuilder
-                    .equal(root.get("gender"), serachUserDTO.getGender());
-            predicates.add(genderPredicate);
-        }
-        if (serachUserDTO.getRegion() != null) {
-            Predicate regionPredicate = criteriaBuilder
-                    .like(root.get("region"), "%" + serachUserDTO.getRegion() + "%");
-            predicates.add(regionPredicate);
-        }
-        if (serachUserDTO.getJob() != null) {
-            Predicate jobPredicate = criteriaBuilder
-                    .like(root.get("job"), "%" + serachUserDTO.getJob() + "%");
-            predicates.add(jobPredicate);
-        }
-        if (serachUserDTO.getUniversityOrCompany() != null) {
-            Predicate universityOrCompanyPredicate = criteriaBuilder
-                    .like(root.get("universityOrCompany"), "%" + serachUserDTO.getUniversityOrCompany() + "%");
-            predicates.add(universityOrCompanyPredicate);
-        }
-        if (serachUserDTO.getPost() != null) {
-            Predicate postPredicate = criteriaBuilder
-                    .equal(root.get("post"), serachUserDTO.getPost());
-            predicates.add(postPredicate);
-        }
-        if (serachUserDTO.getOffice() != null) {
-            Predicate officePredicate = criteriaBuilder
-                    .equal(root.get("office"), serachUserDTO.getOffice());
-            predicates.add(officePredicate);
-        }
-
-        Predicate expiresPredicate = criteriaBuilder.greaterThan(root.get("expiresAt"), Instant.now());
-        predicates.add(expiresPredicate);
-        Predicate rolePredicate = criteriaBuilder.equal(root.get("role"), Role.MEMBER);
-        predicates.add(rolePredicate);
-
-        criteriaQuery.where(
-                criteriaBuilder.and(predicates.toArray(new Predicate[0]))
-        );
-        TypedQuery<User> query = em.createQuery(criteriaQuery);
-        List<User> users = query.getResultList();
-
-        List<UserResponse> userDto = new ArrayList<>();
-        for (User user : users) {
-            UserResponse member = UserResponse.makeUser(user);
-            userDto.add(member);
-        }
-        return userDto;
-    }
 
     @Override
-    public List<UserResponse> getAllUserByFilter(SearchAdmin searchAdmin) {
+    public Page<UserResponse> getAllUserByFilter(SearchAdmin searchAdmin, Pageable pageable) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
         List<Predicate> predicates = new ArrayList<>();
@@ -297,12 +224,90 @@ public class UserServerImpl implements UserService {
             predicates.add(officePredicate);
         }
 
-        if (searchAdmin.isExpired()) {
-            Predicate expiresPredicate;
-            expiresPredicate = criteriaBuilder.lessThan(root.get("expiresAt"), Instant.now());
-            Predicate memberRolePredicate = criteriaBuilder.equal(root.get("role"), Role.MEMBER);
-            Predicate finalPredicate = criteriaBuilder.and(expiresPredicate, memberRolePredicate);
-            predicates.add(finalPredicate);
+
+        if (searchAdmin.getRole() != null) {
+            Predicate rolePredicate = criteriaBuilder.equal(root.get("role"), searchAdmin.getRole());
+            predicates.add(rolePredicate);
+        }
+        if (!searchAdmin.isStatus()) {
+            Predicate statusPredicate = criteriaBuilder.equal(root.get("status"), false);
+            predicates.add(statusPredicate);
+        }
+
+        criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
+
+        TypedQuery<User> query = em.createQuery(criteriaQuery);
+
+        // Apply pagination
+        query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
+        query.setMaxResults(pageable.getPageSize());
+
+        List<User> users = query.getResultList();
+
+        // Convert User entities to UserResponse DTOs
+        List<UserResponse> userDto = new ArrayList<>();
+        for (User user : users) {
+            UserResponse member = UserResponse.makeUser(user);
+            userDto.add(member);
+        }
+
+        // Create a Page<UserResponse> using the results and pageable
+        long totalCount = countUsersByFilter(searchAdmin); // You'll need to implement this method to count total records.
+        return new PageImpl<>(userDto, pageable, totalCount);
+}
+
+    public long countUsersByFilter(SearchAdmin searchAdmin) {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        Root<User> root = criteriaQuery.from(User.class);
+
+        if (searchAdmin.getId() != null) {
+            Predicate idPredicate = criteriaBuilder
+                    .equal(root.get("id"), searchAdmin.getId());
+            predicates.add(idPredicate);
+        }
+
+        if (searchAdmin.getFirstName() != null) {
+            Predicate firstNamePredicate = criteriaBuilder
+                    .like(root.get("firstName"), "%" + searchAdmin.getFirstName() + "%");
+            predicates.add(firstNamePredicate);
+        }
+        if (searchAdmin.getLastName() != null) {
+            Predicate lastNamePredicate = criteriaBuilder
+                    .like(root.get("lastName"), "%" + searchAdmin.getLastName() + "%");
+            predicates.add(lastNamePredicate);
+        }
+        if (searchAdmin.getGender() != null) {
+            Predicate genderPredicate = criteriaBuilder
+                    .equal(root.get("gender"), searchAdmin.getGender());
+            predicates.add(genderPredicate);
+        }
+        if (searchAdmin.getRegion() != null) {
+            Predicate regionPredicate = criteriaBuilder
+                    .like(root.get("region"), "%" + searchAdmin.getRegion() + "%");
+            predicates.add(regionPredicate);
+        }
+        if (searchAdmin.getJob() != null) {
+            Predicate jobPredicate = criteriaBuilder
+                    .like(root.get("job"), "%" + searchAdmin.getJob() + "%");
+            predicates.add(jobPredicate);
+        }
+        if (searchAdmin.getUniversityOrCompany() != null) {
+            Predicate universityOrCompanyPredicate = criteriaBuilder
+                    .like(root.get("universityOrCompany"), "%" + searchAdmin.getUniversityOrCompany() + "%");
+            predicates.add(universityOrCompanyPredicate);
+        }
+        if (searchAdmin.getPost() != null) {
+            Predicate postPredicate = criteriaBuilder
+                    .equal(root.get("post"), searchAdmin.getPost());
+            predicates.add(postPredicate);
+        }
+        if (searchAdmin.getOffice() != null) {
+            Predicate officePredicate = criteriaBuilder
+                    .equal(root.get("office"), searchAdmin.getOffice());
+            predicates.add(officePredicate);
         }
 
 
@@ -311,20 +316,16 @@ public class UserServerImpl implements UserService {
             predicates.add(rolePredicate);
         }
 
-        criteriaQuery.where(
-                criteriaBuilder.and(predicates.toArray(new Predicate[0]))
-        );
-        TypedQuery<User> query = em.createQuery(criteriaQuery);
-        List<User> users = query.getResultList();
+        // Your existing code to build predicates here...
 
-        List<UserResponse> userDto = new ArrayList<>();
-        for (User user : users) {
-            UserResponse member = UserResponse.makeUser(user);
-            userDto.add(member);
-        }
-        return userDto;
+
+        criteriaQuery.select(criteriaBuilder.count(root));
+        criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
+
+        TypedQuery<Long> query = em.createQuery(criteriaQuery);
+
+        return query.getSingleResult();
     }
-
     @Override
     public void changePassword(PasswordChangeRequest passwordChangeRequest, Long id) {
 
@@ -363,50 +364,7 @@ public class UserServerImpl implements UserService {
         }
     }
 
-    @Override
-    public void uploadImage(MultipartFile file, Long id) {
 
-        User user = userRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException("user is not exist"));
-
-        if (UtilsConfiguration.isImage(Objects.requireNonNull(file.getContentType()))){
-
-            fileStorageService.storeFile(file, "USER_IMG");
-             user.setImage(file.getOriginalFilename());
-             userRepository.save(user);
-
-        }else{
-            throw new RuntimeException("mahiyech image****************");
-        }
-    }
-
-    @Override
-    public Resource serveImage(String fileName) {
-        fileName = "USER_IMG/"+fileName;
-        return fileStorageService.loadFileAsResource(fileName);
-    }
-
-    @Override
-    public void uploadCv(MultipartFile file, Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException("user is not exist"));
-
-        if (UtilsConfiguration.isPdf(Objects.requireNonNull(file.getContentType()))){
-
-            fileStorageService.storeFile(file, "USER_CV");
-            user.setCv(file.getOriginalFilename());
-            userRepository.save(user);
-
-        }else{
-            throw new RuntimeException("mahouwech PDF image****************");
-        }
-    }
-
-    @Override
-    public Resource serveCv(String fileName) {
-        fileName = "USER_CV/"+fileName;
-        return fileStorageService.loadFileAsResource(fileName);
-    }
 
 
 }

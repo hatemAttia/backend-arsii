@@ -15,8 +15,7 @@ public interface OpportunityService {
     void updateOpportunity(OpportunityRequest request,Long id);
     void deleteOpportunity(Long id);
 
-    void uploadImage(MultipartFile file, Long id);
-    Resource serveImage(String fileName);
+
 
 
 }
