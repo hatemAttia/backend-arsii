@@ -1,11 +1,7 @@
 package com.example.backendarsii.controller;
 
-import com.example.backendarsii.dto.responseDto.EventResponse;
-import com.example.backendarsii.dto.responseDto.PartnerResponse;
-import com.example.backendarsii.dto.responseDto.UserResponse;
-import com.example.backendarsii.service.EventService;
-import com.example.backendarsii.service.PartnerService;
-import com.example.backendarsii.service.UserService;
+import com.example.backendarsii.dto.responseDto.*;
+import com.example.backendarsii.service.*;
 import com.example.backendarsii.utils.Constants;
 import com.example.backendarsii.utils.enumData.EventType;
 import io.swagger.annotations.Api;
@@ -26,6 +22,9 @@ public class VisitorController {
     public final EventService eventService;
 
     public final PartnerService partnerService;
+    public final OpportunityService opportunityService;
+    public final ClubService clubService;
+
 
     @GetMapping(value = "allMember")
     public ResponseEntity<List<UserResponse>> getAllMember() {
@@ -33,9 +32,7 @@ public class VisitorController {
     }
     @GetMapping(value = "allEvent/{type}")
     public ResponseEntity<List<EventResponse>> getAllEvent(@PathVariable EventType type) {
-
         return ResponseEntity.ok(eventService.getAllEvent(type));
-
     }
 
     @GetMapping("allPartner")
@@ -43,4 +40,20 @@ public class VisitorController {
         return ResponseEntity.ok(partnerService.getAllPartner());
     }
 
+    @GetMapping("allOportunity")
+    public ResponseEntity<List<OpportunityResponse>> getAllOpportunity (){
+        return ResponseEntity.ok(opportunityService.getAllOpportunity());
+    }
+
+
+    @GetMapping(value = "event/{id}")
+    public ResponseEntity<EventResponse> getEventById(@PathVariable Long id) {
+        return ResponseEntity.ok(eventService.getEventById(id));
+    }
+
+    @GetMapping("/allClub")
+    public ResponseEntity<List<ClubResponse>> getAllClub() {
+        List<ClubResponse> clubs = clubService.getAllClub();
+        return ResponseEntity.ok(clubs);
+    }
 }
