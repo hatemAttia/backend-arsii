@@ -18,7 +18,6 @@ public interface PartnerService {
     void updatePartner(Long id, PartnerRequest partnerRequest);
 
     void deletePartner(Long id);
-    void uploadImage(MultipartFile file, Long id);
-    Resource serveImage(String fileName);
+
 
 }

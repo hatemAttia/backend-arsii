@@ -17,6 +17,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 @Service
@@ -28,15 +30,21 @@ public class FileStorageService {
     @Value("${file.upload-dir}")
     private String fileStorageLocation;
 
-    public void storeFile(MultipartFile file, String relativePath) {
+    public String storeFile(MultipartFile file) {
+
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         try {
             if (fileName.contains("..")) {
                 throw new RuntimeException("mahoch mawjoud ************"+fileName);
             }
 
-            relativePath = relativePath + "/" + fileName;
-            Path targetLocation = Paths.get(fileStorageLocation).resolve(relativePath).normalize();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            String timestamp = dateFormat.format(new Date());
+
+
+            String newFileName = timestamp + "_" + fileName;
+
+            Path targetLocation = Paths.get(fileStorageLocation).resolve(newFileName).normalize();
             File uploadDir = new File(fileStorageLocation);
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
@@ -47,6 +55,7 @@ public class FileStorageService {
             }
 
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            return newFileName;
 
         } catch (IOException ex) {
 

@@ -95,25 +95,5 @@ public class PartnerServiceImpl implements PartnerService {
         partnerRepository.deleteById(id);
     }
 
-    @Override
-    public void uploadImage(MultipartFile file, Long id) {
-        Partner partner = partnerRepository.findById(id).orElseThrow(
-                ()-> new NotFoundException("partner is not exist"));
 
-        if (UtilsConfiguration.isImage(Objects.requireNonNull(file.getContentType()))){
-
-            fileStorageService.storeFile(file, "PARTNER_IMG");
-            partner.setImage(file.getOriginalFilename());
-            partnerRepository.save(partner);
-
-        }else{
-            throw new RuntimeException("mahiyech image****************");
-        }
-    }
-
-    @Override
-    public Resource serveImage(String fileName) {
-        fileName = "PARTNER_IMG/"+fileName;
-        return fileStorageService.loadFileAsResource(fileName);
-    }
 }

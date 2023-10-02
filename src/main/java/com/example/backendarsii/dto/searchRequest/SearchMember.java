@@ -4,6 +4,7 @@ package com.example.backendarsii.dto.searchRequest;
 import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
 import com.example.backendarsii.utils.enumData.Post;
+import com.example.backendarsii.utils.enumData.Role;
 import lombok.Data;
 
 import javax.persistence.EnumType;
@@ -22,5 +23,7 @@ public class SearchMember {
     private Post post;
     @Enumerated(EnumType.STRING)
     private Office office;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

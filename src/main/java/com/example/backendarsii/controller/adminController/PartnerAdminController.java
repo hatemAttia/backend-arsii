@@ -55,21 +55,6 @@ public class PartnerAdminController {
         partnerService.deletePartner(id);
         return ResponseEntity.ok("delete success !");
     }
-    @PostMapping(value = "uploadImage/{partnerId}")
-    public ResponseEntity<String> storeImage(@PathParam("file") MultipartFile file, @PathVariable Long partnerId){
-        partnerService.uploadImage(file,partnerId);
-        return ResponseEntity.ok("upload success");
-    }
-
-    @GetMapping("img/{filename:.+}")
-    public ResponseEntity<Resource> serveImage(@PathVariable String filename) {
-
-
-        Resource resource = partnerService.serveImage(filename);
-        return   ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                .body(resource);
-    }
 
 
 }
