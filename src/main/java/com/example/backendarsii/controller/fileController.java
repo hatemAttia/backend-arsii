@@ -6,11 +6,13 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
+import java.util.Collections;
 
 @RestController
 @RequestMapping(Constants.APP_ROOT + "/file")
@@ -22,8 +24,9 @@ public class fileController {
     private final fileService service;
 
     @PostMapping(value = "uploadImage")
-    public ResponseEntity<String> uploadImage(@PathParam("file") MultipartFile file){
-        return ResponseEntity.ok( service.uploadImage(file));
+    public ResponseEntity<Object> uploadImage(@PathParam("file") MultipartFile file){
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("file", service.uploadImage(file)));
     }
 
     @GetMapping("img/{filename:.+}")
@@ -36,8 +39,9 @@ public class fileController {
                 .body(resource);
     }
     @PostMapping(value = "uploadPDF")
-    public ResponseEntity<String> uploadPDF(@PathParam("file") MultipartFile file){
-        return ResponseEntity.ok(service.uploadPDF(file));
+    public ResponseEntity<Object> uploadPDF(@PathParam("file") MultipartFile file){
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("file", service.uploadPDF(file)));
     }
 
     @GetMapping("PDF/{filename:.+}")
