@@ -1,27 +1,20 @@
 package com.example.backendarsii.service.serviceImpl;
 
-import com.example.backendarsii.config.UtilsConfiguration;
 import com.example.backendarsii.dto.requestDto.EventRequest;
 import com.example.backendarsii.dto.requestDto.UpdateEventRequest;
 import com.example.backendarsii.dto.responseDto.EventResponse;
 import com.example.backendarsii.entity.Event;
-import com.example.backendarsii.entity.Opportunity;
 import com.example.backendarsii.entity.Partner;
 import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.EventRepository;
 import com.example.backendarsii.repository.PartnerRepository;
 import com.example.backendarsii.service.EventService;
-import com.example.backendarsii.utils.FileStorageService;
 import com.example.backendarsii.utils.enumData.EventType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +23,6 @@ public class EventServiceImpl implements EventService {
     private final PartnerRepository partnerRepository;
     private final EventRepository eventRepository;
 
-    @Autowired
-    private FileStorageService fileStorageService;
 
     @Override
     public void addEvent(EventRequest eventRequest) {
@@ -57,7 +48,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventResponse> getAllEvent(EventType type) {
-        List<Event> events = eventRepository.findAllEvent(type);
+        System.out.println(type + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        List<Event> events = new ArrayList<>();
+        if (type == null) {
+            events = eventRepository.findAllEvent();
+        } else {
+            events = eventRepository.findAllEvent(type);
+        }
         List<EventResponse> eventResponses = new ArrayList<>();
         for (Event event : events) {
             EventResponse eventResponse = EventResponse.makeEvent(event);
@@ -65,6 +62,7 @@ public class EventServiceImpl implements EventService {
         }
         return eventResponses;
     }
+
     @Override
     public List<EventResponse> getAllActivity() {
         List<Event> events = eventRepository.findAllActivity();
@@ -77,7 +75,6 @@ public class EventServiceImpl implements EventService {
     }
 
 
-
     @Override
     public EventResponse getEventById(Long id) {
         Event event = eventRepository.findById(id).orElseThrow(
@@ -88,25 +85,50 @@ public class EventServiceImpl implements EventService {
     @Override
     public void updateEvent(Long id, UpdateEventRequest updateEventRequest) {
 
-        Partner partner = null;
-        if (updateEventRequest.getPartnerId() != null) {
-            partner = partnerRepository.findById(updateEventRequest.getPartnerId()).orElseThrow(
-                    () -> new NotFoundException(String.format("this partnerId[%s] is not exist", updateEventRequest.getPartnerId())));
-        }
+
 
         Event event = eventRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format("this Id [%s] is not exist", id)));
-        event.setTitle(updateEventRequest.getTitle());
-        event.setDescription(updateEventRequest.getDescription());
-        event.setDate(updateEventRequest.getDate());
-        event.setMaxOfParticipants(updateEventRequest.getMaxOfParticipants());
-        event.setPrice(updateEventRequest.getPrice());
-        event.setFormateur(updateEventRequest.getFormateur());
-        event.setLocation(updateEventRequest.getLocation());
-        event.setType(updateEventRequest.getType());
-        event.setPartner(partner);
-        event.setImage(updateEventRequest.getImage());
-        event.setStatus(event.isStatus());
+
+        if (updateEventRequest.getTitle() != null) {
+            event.setTitle(updateEventRequest.getTitle());
+        }
+        if (updateEventRequest.getDescription() != null) {
+            event.setDescription(updateEventRequest.getDescription());
+        }
+        if (updateEventRequest.getDate() != null) {
+            event.setDate(updateEventRequest.getDate());
+        }
+        if (updateEventRequest.getMaxOfParticipants() != null) {
+            event.setMaxOfParticipants(updateEventRequest.getMaxOfParticipants());
+        }
+        if (updateEventRequest.getPrice() != null) {
+            event.setPrice(updateEventRequest.getPrice());
+        }
+        if (updateEventRequest.getFormateur() != null) {
+            event.setFormateur(updateEventRequest.getFormateur());
+        }
+        if (updateEventRequest.getLocation() != null) {
+            event.setLocation(updateEventRequest.getLocation());
+        }
+        if (updateEventRequest.getType() != null) {
+            event.setType(updateEventRequest.getType());
+        }
+        if (updateEventRequest.getPartnerId() != null) {
+            Partner partner = null;
+
+                partner = partnerRepository.findById(updateEventRequest.getPartnerId()).orElseThrow(
+                        () -> new NotFoundException(String.format("this partnerId[%s] is not exist", updateEventRequest.getPartnerId())));
+
+            event.setPartner(partner);
+        }
+        if (updateEventRequest.getImage() != null) {
+            event.setImage(updateEventRequest.getImage());
+        }
+        if (!updateEventRequest.isStatus()) {
+            event.setStatus(event.isStatus());
+        }
+
 
         eventRepository.save(event);
 

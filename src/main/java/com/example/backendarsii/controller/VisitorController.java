@@ -1,8 +1,10 @@
 package com.example.backendarsii.controller;
 
+import com.example.backendarsii.dto.requestDto.EmailForm;
 import com.example.backendarsii.dto.responseDto.*;
 import com.example.backendarsii.service.*;
 import com.example.backendarsii.utils.Constants;
+import com.example.backendarsii.utils.EmailUtil;
 import com.example.backendarsii.utils.enumData.EventType;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ public class VisitorController {
     public final PartnerService partnerService;
     public final OpportunityService opportunityService;
     public final ClubService clubService;
+    private final MediaService mediaService;
+    private final EmailUtil emailUtil;
 
 
     @GetMapping(value = "allMember")
@@ -55,5 +59,20 @@ public class VisitorController {
     public ResponseEntity<List<ClubResponse>> getAllClub() {
         List<ClubResponse> clubs = clubService.getAllClub();
         return ResponseEntity.ok(clubs);
+    }
+    @GetMapping(value = "allMedia")
+    public ResponseEntity<List<MediaResponse>> getAllMedia() {
+        return ResponseEntity.ok(mediaService.getAllMedia());
+    }
+
+    @GetMapping(value = "media/{id}")
+    public ResponseEntity<MediaResponse> getMediaById(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(mediaService.getMediaById(id));
+    }
+    @PostMapping(value = "sendEmail")
+    public ResponseEntity<String> sendEmail(@RequestBody EmailForm form) {
+
+       emailUtil.sendEmail("attia00018@gmail.com", form.getFrom(), form.getSubject(), form.getContent());
+       return ResponseEntity.ok("OK !!!!!!");
     }
 }

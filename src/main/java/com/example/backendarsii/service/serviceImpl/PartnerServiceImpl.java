@@ -1,9 +1,7 @@
 package com.example.backendarsii.service.serviceImpl;
 
-import com.example.backendarsii.config.UtilsConfiguration;
 import com.example.backendarsii.dto.requestDto.PartnerRequest;
 import com.example.backendarsii.dto.responseDto.PartnerResponse;
-import com.example.backendarsii.entity.Event;
 import com.example.backendarsii.entity.Partner;
 import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.exception.NotFoundException;
@@ -12,13 +10,10 @@ import com.example.backendarsii.service.PartnerService;
 import com.example.backendarsii.utils.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -76,12 +71,25 @@ public class PartnerServiceImpl implements PartnerService {
             throw new ConflictException(String.format("this name is already exist ( [%s] ) ", partnerRequest.getName()));
         }
 
-        partner.setName(partnerRequest.getName());
-        partner.setDescription(partnerRequest.getDescription());
-        partner.setAddress(partnerRequest.getAddress());
-        partner.setContact(partnerRequest.getContact());
-        partner.setType(partnerRequest.getType());
-        partner.setImage(partnerRequest.getImage());
+        if (partnerRequest.getName() != null) {
+            partner.setName(partnerRequest.getName());
+        }
+        if (partnerRequest.getDescription() != null) {
+            partner.setDescription(partnerRequest.getDescription());
+        }
+        if (partnerRequest.getAddress() != null) {
+            partner.setAddress(partnerRequest.getAddress());
+        }
+        if (partnerRequest.getContact() != null) {
+            partner.setContact(partnerRequest.getContact());
+        }
+        if (partnerRequest.getType() != null) {
+            partner.setType(partnerRequest.getType());
+        }
+        if (partnerRequest.getImage() != null) {
+            partner.setImage(partnerRequest.getImage());
+        }
+
 
         partnerRepository.save(partner);
 

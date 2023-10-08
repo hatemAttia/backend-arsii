@@ -76,8 +76,13 @@ public class CategoryServiceImpl implements CategoryService {
         if (!category.getName().equals(categoryRequest.getName()) && categoryRepository.existsByName(categoryRequest.getName())) {
             throw new ConflictException(String.format("this name is already exist ( [%s] ) ", categoryRequest.getName()));
         }
-        category.setName(categoryRequest.getName());
-        category.setDescription(categoryRequest.getDescription());
+        if (categoryRequest.getName() != null) {
+            category.setName(categoryRequest.getName());
+        }
+        if (categoryRequest.getDescription() != null) {
+            category.setDescription(categoryRequest.getDescription());
+        }
+
 
         categoryRepository.save(category);
 

@@ -1,37 +1,27 @@
 package com.example.backendarsii.service.serviceImpl;
 
 
-import com.example.backendarsii.config.UtilsConfiguration;
 import com.example.backendarsii.dto.requestDto.PasswordChangeRequest;
 import com.example.backendarsii.dto.requestDto.UpdateMemberRequest;
 import com.example.backendarsii.dto.requestDto.UpdateUserRequest;
-import com.example.backendarsii.dto.responseDto.UploadFileDetails;
 import com.example.backendarsii.dto.responseDto.UserResponse;
 import com.example.backendarsii.dto.searchRequest.SearchAdmin;
-import com.example.backendarsii.dto.searchRequest.SearchMember;
 import com.example.backendarsii.entity.User;
 import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.UserRepository;
 import com.example.backendarsii.service.UserService;
 import com.example.backendarsii.utils.EmailUtil;
-import com.example.backendarsii.utils.FileStorageService;
 import com.example.backendarsii.utils.OtpUtil;
-import com.example.backendarsii.utils.enumData.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -40,9 +30,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import java.time.Instant;
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -56,7 +46,6 @@ public class UserServerImpl implements UserService {
     private OtpUtil otpUtil;
     @Autowired
     private EmailUtil emailUtil;
-
 
 
     @Override
@@ -91,19 +80,45 @@ public class UserServerImpl implements UserService {
             throw new ConflictException(String.format("this userName is already exist ( [%s] ) ", request.getUserName()));
         }
 
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setUserName(request.getUserName());
-        user.setEmail(request.getEmail());
-        user.setGender(request.getGender());
-        user.setPhoneNumber(request.getPhoneNumber());
-        user.setRegion(request.getRegion());
-        user.setImage(request.getImage());
-        user.setDateOfBirth(request.getDateOfBirth());
-        user.setJob(request.getJob());
-        user.setUniversityOrCompany(request.getUniversityOrCompany());
-        user.setOffice(request.getOffice());
-
+        if (request.getFirstName() != null) {
+            user.setFirstName(request.getFirstName());
+        }
+        if (request.getLastName() != null) {
+            user.setLastName(request.getLastName());
+        }
+        if (request.getUserName() != null) {
+            user.setUserName(request.getUserName());
+        }
+        if (request.getEmail() != null) {
+            user.setEmail(request.getEmail());
+        }
+        if (request.getGender() != null) {
+            user.setGender(request.getGender());
+        }
+        if (request.getPhoneNumber() != null) {
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (request.getRegion() != null) {
+            user.setRegion(request.getRegion());
+        }
+        if (request.getImage() != null) {
+            user.setImage(request.getImage());
+        }
+        if (request.getCv() != null) {
+            user.setCv(request.getCv());
+        }
+        if (request.getDateOfBirth() != null) {
+            user.setDateOfBirth(request.getDateOfBirth());
+        }
+        if (request.getJob() != null) {
+            user.setJob(request.getJob());
+        }
+        if (request.getUniversityOrCompany() != null) {
+            user.setUniversityOrCompany(request.getUniversityOrCompany());
+        }
+        if (request.getOffice() != null) {
+            user.setOffice(request.getOffice());
+        }
 
         userRepository.save(user);
 
@@ -122,19 +137,51 @@ public class UserServerImpl implements UserService {
             throw new ConflictException(String.format("this userName is already exist ( [%s] ) ", request.getUserName()));
         }
 
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setUserName(request.getUserName());
-        user.setEmail(request.getEmail());
-        user.setGender(request.getGender());
-        user.setPhoneNumber(request.getPhoneNumber());
-        user.setRegion(request.getRegion());
-        user.setDateOfBirth(request.getDateOfBirth());
-        user.setJob(request.getJob());
-        user.setUniversityOrCompany(request.getUniversityOrCompany());
-        user.setOffice(request.getOffice());
-        user.setPost(request.getPost());
-        user.setRole(request.getRole());
+        if (request.getFirstName() != null) {
+            user.setFirstName(request.getFirstName());
+        }
+        if (request.getLastName() != null) {
+            user.setLastName(request.getLastName());
+        }
+        if (request.getUserName() != null) {
+            user.setUserName(request.getUserName());
+        }
+        if (request.getEmail() != null) {
+            user.setEmail(request.getEmail());
+        }
+        if (request.getGender() != null) {
+            user.setGender(request.getGender());
+        }
+        if (request.getPhoneNumber() != null) {
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (request.getRegion() != null) {
+            user.setRegion(request.getRegion());
+        }
+        if (request.getDateOfBirth() != null) {
+            user.setDateOfBirth(request.getDateOfBirth());
+        }
+        if (request.getJob() != null) {
+            user.setJob(request.getJob());
+        }
+        if (request.getUniversityOrCompany() != null) {
+            user.setUniversityOrCompany(request.getUniversityOrCompany());
+        }
+        if (request.getOffice() != null) {
+            user.setOffice(request.getOffice());
+        }
+        if (request.getPost() != null) {
+            user.setPost(request.getPost());
+        }
+        if (request.getRole() != null) {
+            user.setRole(request.getRole());
+        }
+        if (request.getImage() != null) {
+            user.setImage(request.getImage());
+        }
+        if (request.getCv() != null) {
+            user.setCv(request.getCv());
+        }
 
         userRepository.save(user);
 
@@ -165,9 +212,6 @@ public class UserServerImpl implements UserService {
         userRepository.save(user);
 
     }
-
-
-
 
 
     @Override
@@ -255,7 +299,7 @@ public class UserServerImpl implements UserService {
         // Create a Page<UserResponse> using the results and pageable
         long totalCount = countUsersByFilter(searchAdmin); // You'll need to implement this method to count total records.
         return new PageImpl<>(userDto, pageable, totalCount);
-}
+    }
 
     public long countUsersByFilter(SearchAdmin searchAdmin) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
@@ -327,6 +371,7 @@ public class UserServerImpl implements UserService {
 
         return query.getSingleResult();
     }
+
     @Override
     public void changePassword(PasswordChangeRequest passwordChangeRequest, Long id) {
 
@@ -364,8 +409,6 @@ public class UserServerImpl implements UserService {
             throw new RuntimeException("Invalid OTP or user not found.");
         }
     }
-
-
 
 
 }

@@ -53,11 +53,18 @@ public class UserCompetenceServiceImpl implements UserCompetenceService {
 
         UserCompetence userCompetence = userCompetenceRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format("this UserCompetence with id [%s] is not exist", id)));
-        Competence competence = competenceRepository.findById(userCompetenceRequest.getCompetenceId()).orElseThrow(
-                () -> new NotFoundException(String.format("this Competence with id [%s] is not exist", userCompetenceRequest.getCompetenceId())));
 
-        userCompetence.setCompetence(competence);
-        userCompetence.setLevel(userCompetenceRequest.getLevel());
+        if (userCompetenceRequest.getCompetenceId() != null) {
+            Competence competence = competenceRepository.findById(userCompetenceRequest.getCompetenceId()).orElseThrow(
+                    () -> new NotFoundException(String.format("this Competence with id [%s] is not exist", userCompetenceRequest.getCompetenceId())));
+
+            userCompetence.setCompetence(competence);
+        }
+        if (userCompetenceRequest.getLevel() != null) {
+
+            userCompetence.setLevel(userCompetenceRequest.getLevel());
+        }
+
 
         userCompetenceRepository.save(userCompetence);
     }

@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,7 +21,7 @@ public class CompetenceResponse {
     private Long id;
     private String name;
     private String description;
-    private CategoryResponse category;
+
     private Instant createdAt;
     private Instant updatedAt;
 
@@ -28,9 +30,16 @@ public class CompetenceResponse {
                 .id(competence.getId())
                 .name(competence.getName())
                 .description(competence.getDescription())
-                .category(CategoryResponse.makeCategory(competence.getCategory()))
                 .createdAt(competence.getCreatedAt())
                 .updatedAt(competence.getUpdatedAt()).build();
+    }
+    public static List<CompetenceResponse> makeCompetences(List<Competence> competences) {
+        List<CompetenceResponse> competenceResponses = new ArrayList<>();
+        for (Competence competence : competences) {
+            CompetenceResponse competenceResponse = makeCompetence(competence);
+            competenceResponses.add(competenceResponse);
+        }
+        return competenceResponses;
     }
 
 }
