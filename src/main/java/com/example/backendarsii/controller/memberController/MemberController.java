@@ -13,12 +13,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
@@ -52,17 +55,21 @@ public class MemberController {
     }
 
     @PutMapping
-    public ResponseEntity<String> updateMe(@RequestBody UpdateMemberRequest request) {
+    public ResponseEntity<Object> updateMe(@RequestBody UpdateMemberRequest request) {
         UserResponse user = userService.getConnectedUser();
         userService.updateMember(user.getId(), request);
-        return ResponseEntity.ok("update success!!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "update success!!"));
     }
 
     @PutMapping(value = "/password")
-    public ResponseEntity<String> changeMyPassword(@RequestBody PasswordChangeRequest request) {
+    public ResponseEntity<Object> changeMyPassword(@RequestBody PasswordChangeRequest request) {
         UserResponse user = userService.getConnectedUser();
         userService.changePassword(request, user.getId());
-        return ResponseEntity.ok("Password changed successfully !!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "Password changed successfully !!"));
     }
 
 

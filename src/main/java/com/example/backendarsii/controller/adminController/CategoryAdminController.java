@@ -6,10 +6,12 @@ import com.example.backendarsii.service.CategoryService;
 import com.example.backendarsii.utils.Constants;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,23 +34,29 @@ public class CategoryAdminController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addCategory(@RequestBody @Valid CategoryRequest request) {
+    public ResponseEntity<Object> addCategory(@RequestBody @Valid CategoryRequest request) {
         categoryService.addCategory(request);
-        return ResponseEntity.ok("save success !");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "save success !"));
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<String> deleteCategory(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<Object> deleteCategory(@PathVariable(name = "id") Long id) {
         categoryService.deleteCategory(id);
-        return ResponseEntity.ok("delete success !");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "delete success !"));
     }
 
     @PutMapping(value = "{id}")
-    public ResponseEntity<String> updateCategory(
+    public ResponseEntity<Object> updateCategory(
             @PathVariable(name = "id") Long id,
             @RequestBody @Valid CategoryRequest request) {
 
         categoryService.updateCategory(id, request);
-        return ResponseEntity.ok("update success !!!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "update success !!!"));
     }
 }
