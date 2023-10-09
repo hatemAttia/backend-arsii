@@ -14,6 +14,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -39,6 +40,7 @@ public class UserResponse {
     private Office office;
     private String image;
     private String cv;
+    private List<ContactResponse> contacts;
     private boolean status;
     private boolean isPaid;
 
@@ -65,6 +67,7 @@ public class UserResponse {
                 .office(user.getOffice())
                 .image(user.getImage())
                 .cv(user.getCv())
+                .contacts(ContactResponse.makeContacts(user.getContacts()))
                 .status(user.isStatus())
                 .isPaid(user.isPaid())
                 .createdAt(user.getCreatedAt())

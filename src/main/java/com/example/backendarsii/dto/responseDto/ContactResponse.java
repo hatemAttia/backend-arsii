@@ -1,5 +1,6 @@
 package com.example.backendarsii.dto.responseDto;
 
+import com.example.backendarsii.entity.Competence;
 import com.example.backendarsii.entity.Contact;
 import com.example.backendarsii.utils.enumData.Platform;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -28,6 +31,14 @@ public class ContactResponse {
                 .url(contact.getUrl())
                 .createdAt(contact.getCreatedAt())
                 .updatedAt(contact.getUpdatedAt()).build();
+    }
+    public static List<ContactResponse> makeContacts(List<Contact> contacts) {
+        List<ContactResponse> contactResponses = new ArrayList<>();
+        for (Contact contact : contacts) {
+            ContactResponse contactResponse = makeContact(contact);
+            contactResponses.add(contactResponse);
+        }
+        return contactResponses;
     }
 
 }

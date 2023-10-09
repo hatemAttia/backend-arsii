@@ -8,10 +8,12 @@ import com.example.backendarsii.service.UserService;
 import com.example.backendarsii.utils.Constants;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 
 @RestController
 @RequestMapping(Constants.APP_ROOT + "/auth")
@@ -40,19 +42,23 @@ public class AuthenticationController {
     }
 
     @PostMapping("/forgot-password")
-    public String forgotPassword(@RequestParam String username) {
+    public ResponseEntity<Object> forgotPassword(@RequestParam String username) {
         userService.forgotPassword(username);
-        return "OTP sent to your email.";
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "OTP sent to your email."));
     }
 
     @PostMapping("/reset-password")
-    public String resetPassword(
+    public ResponseEntity<Object> resetPassword(
             @RequestParam String username,
             @RequestParam String otp,
             @RequestParam String newPassword
     ) {
         userService.resetPasswordWithOTP(username, otp, newPassword);
-        return "Password reset successfully.";
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "Password reset successfully."));
     }
 
 }

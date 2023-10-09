@@ -8,10 +8,12 @@ import com.example.backendarsii.service.UserService;
 import com.example.backendarsii.utils.Constants;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,9 +28,11 @@ public class UserCompetenceAdminController {
 
 
     @PostMapping
-    public ResponseEntity<String> addUserCompetence(@RequestBody @Valid UserCompetenceRequest request) {
+    public ResponseEntity<Object> addUserCompetence(@RequestBody @Valid UserCompetenceRequest request) {
         userCompetenceService.addUserCompetence(request);
-        return ResponseEntity.ok("save success !!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "save success !!"));
     }
 
     @GetMapping(value = "users/{id}")
@@ -50,18 +54,22 @@ public class UserCompetenceAdminController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<String> updateUserCompetence(
+    public ResponseEntity<Object> updateUserCompetence(
             @PathVariable Long id,
             @RequestBody @Valid UserCompetenceRequest request
     ) {
         userCompetenceService.updateUserCompetence(id, request);
-        return ResponseEntity.ok("update success !!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "update success !!"));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> updateUserCompetence(@PathVariable Long id) {
+    public ResponseEntity<Object> updateUserCompetence(@PathVariable Long id) {
         userCompetenceService.deleteUserCompetence(id);
-        return ResponseEntity.ok("delete success !!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "delete success !!"));
     }
 
 

@@ -8,12 +8,14 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,9 +28,11 @@ public class PartnerAdminController {
     private final PartnerService partnerService;
 
     @PostMapping
-    public ResponseEntity<String> addPartner(@RequestBody @Valid PartnerRequest request) {
+    public ResponseEntity<Object> addPartner(@RequestBody @Valid PartnerRequest request) {
         partnerService.addPartner(request);
-        return ResponseEntity.ok("save success !");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "save success !"));
     }
 
     @GetMapping
@@ -42,18 +46,22 @@ public class PartnerAdminController {
     }
 
     @PutMapping(value = "{id}")
-    public ResponseEntity<String> updatePartner(
+    public ResponseEntity<Object> updatePartner(
             @PathVariable Long id,
             @RequestBody @Valid PartnerRequest request) {
 
         partnerService.updatePartner(id, request);
-        return ResponseEntity.ok("update success !");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "update success !"));
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<String> deletePartner(@PathVariable Long id) {
+    public ResponseEntity<Object> deletePartner(@PathVariable Long id) {
         partnerService.deletePartner(id);
-        return ResponseEntity.ok("delete success !");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "delete success !"));
     }
 
 

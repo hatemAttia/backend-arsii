@@ -8,9 +8,11 @@ import com.example.backendarsii.utils.EmailUtil;
 import com.example.backendarsii.utils.enumData.EventType;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -70,9 +72,11 @@ public class VisitorController {
         return ResponseEntity.ok(mediaService.getMediaById(id));
     }
     @PostMapping(value = "sendEmail")
-    public ResponseEntity<String> sendEmail(@RequestBody EmailForm form) {
+    public ResponseEntity<Object> sendEmail(@RequestBody EmailForm form) {
 
        emailUtil.sendEmail("attia00018@gmail.com", form.getFrom(), form.getSubject(), form.getContent());
-       return ResponseEntity.ok("OK !!!!!!");
+
+       return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "OK !!!!!!"));
     }
 }
