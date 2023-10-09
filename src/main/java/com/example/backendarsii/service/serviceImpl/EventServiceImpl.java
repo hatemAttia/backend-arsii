@@ -99,10 +99,11 @@ public class EventServiceImpl implements EventService {
         if (updateEventRequest.getDate() != null) {
             event.setDate(updateEventRequest.getDate());
         }
-        if (updateEventRequest.getMaxOfParticipants() != null) {
+        if (updateEventRequest.getMaxOfParticipants() != 0) {
             event.setMaxOfParticipants(updateEventRequest.getMaxOfParticipants());
         }
-        if (updateEventRequest.getPrice() != null) {
+        System.out.println("----------------------------------------"+updateEventRequest.getPrice());
+        if (updateEventRequest.getPrice() != 0) {
             event.setPrice(updateEventRequest.getPrice());
         }
         if (updateEventRequest.getFormateur() != null) {
@@ -128,6 +129,7 @@ public class EventServiceImpl implements EventService {
         if (!updateEventRequest.isStatus()) {
             event.setStatus(event.isStatus());
         }
+        event.setActivity(updateEventRequest.isActivity());
 
 
         eventRepository.save(event);
