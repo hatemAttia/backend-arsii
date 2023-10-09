@@ -7,10 +7,12 @@ import com.example.backendarsii.service.UserEventService;
 import com.example.backendarsii.utils.Constants;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,9 +25,11 @@ public class UserEventMemberController {
     private final UserEventService userEventService;
 
     @PostMapping
-    public ResponseEntity<String> joinEvent(@RequestBody @Valid UserEventRequest request) {
+    public ResponseEntity<Object> joinEvent(@RequestBody @Valid UserEventRequest request) {
         userEventService.joinEvent(request);
-        return ResponseEntity.ok("join success !!!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "join success !!!"));
     }
 
     @GetMapping(value = "/users/{eventId}")
@@ -39,9 +43,11 @@ public class UserEventMemberController {
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<String> deleteUserEvent(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteUserEvent(@PathVariable Long id) {
         userEventService.deleteUserEvent(id);
-        return ResponseEntity.ok("delete success !!!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "delete success !!!"));
     }
 
 }

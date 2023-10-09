@@ -8,11 +8,13 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,9 +27,11 @@ public class OpportunityAdminController {
     private final OpportunityService opportunityService;
 
     @PostMapping
-    public ResponseEntity<String> createOpportunity (@RequestBody OpportunityRequest request){
+    public ResponseEntity<Object> createOpportunity (@RequestBody OpportunityRequest request){
         opportunityService.createOpportunity(request);
-        return ResponseEntity.ok("save success !!!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "save success !!!"));
     }
     @GetMapping
     public ResponseEntity<List<OpportunityResponse>> getAllOpportunity (){
@@ -39,18 +43,21 @@ public class OpportunityAdminController {
         return ResponseEntity.ok(opportunityService.getOpportunityById(id));
     }
     @PutMapping(value = "{id}")
-    public ResponseEntity<String> UpdateOpportunity (
+    public ResponseEntity<Object> UpdateOpportunity (
             @RequestBody OpportunityRequest request,
             @PathVariable Long id){
 
         opportunityService.updateOpportunity(request,id);
-        return ResponseEntity.ok("update success !!!!");
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "update success !!!!"));
     }
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<String> deleteOpportunity (@PathVariable Long id){
+    public ResponseEntity<Object> deleteOpportunity (@PathVariable Long id){
 
         opportunityService.deleteOpportunity(id);
-        return ResponseEntity.ok("delete success !!!!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "delete success !!!!"));
     }
 
 

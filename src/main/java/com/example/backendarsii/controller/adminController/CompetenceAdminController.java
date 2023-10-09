@@ -6,10 +6,12 @@ import com.example.backendarsii.service.CompetenceService;
 import com.example.backendarsii.utils.Constants;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,24 +35,28 @@ public class CompetenceAdminController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addCompetence(@RequestBody @Valid CompetenceRequest request) {
+    public ResponseEntity<Object> addCompetence(@RequestBody @Valid CompetenceRequest request) {
         competenceService.addCompetence(request);
-        return ResponseEntity.ok("save success !");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "save success !"));
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<String> deleteCompetence(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<Object> deleteCompetence(@PathVariable(name = "id") Long id) {
         competenceService.deleteCompetence(id);
-        return ResponseEntity.ok("delete success !");
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "delete success !"));
     }
 
     @PutMapping(value = "{id}")
-    public ResponseEntity<String> updateCompetence(
+    public ResponseEntity<Object> updateCompetence(
             @PathVariable(name = "id") Long id,
             @RequestBody @Valid CompetenceRequest request) {
 
         competenceService.updateCompetence(id, request);
-        return ResponseEntity.ok("update success !!!");
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "update success !!!"));
     }
 
 }

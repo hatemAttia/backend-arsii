@@ -7,10 +7,12 @@ import com.example.backendarsii.service.DocumentService;
 import com.example.backendarsii.utils.Constants;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
@@ -22,19 +24,22 @@ public class DocumentController {
     private final DocumentService documentService;
 
     @PostMapping
-    public ResponseEntity<String> createDocument(@RequestBody @Valid DocumentRequest documentRequest) {
+    public ResponseEntity<Object> createDocument(@RequestBody @Valid DocumentRequest documentRequest) {
         if (documentRequest != null) {
             documentService.createDocument(documentRequest);
-            return ResponseEntity.ok("Document created successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    Collections.singletonMap("message", "Document created successfully"));
         } else {
             return ResponseEntity.badRequest().body("Invalid Document data");
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteDocument(@PathVariable Integer id) {
+    public ResponseEntity<Object> deleteDocument(@PathVariable Integer id) {
         documentService.deleteDocument(id);
-        return ResponseEntity.ok("Delete successfully");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "Delete successfully"));
     }
 
     @GetMapping("/alldocument")

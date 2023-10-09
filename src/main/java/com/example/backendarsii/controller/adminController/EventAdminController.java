@@ -11,12 +11,14 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,9 +31,11 @@ public class EventAdminController {
     private final EventService eventService;
 
     @PostMapping
-    public ResponseEntity<String> createEvent(@RequestBody EventRequest eventRequest) {
+    public ResponseEntity<Object> createEvent(@RequestBody EventRequest eventRequest) {
         eventService.addEvent(eventRequest);
-        return ResponseEntity.ok("save success !!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "save success !!"));
     }
 
     @GetMapping
@@ -51,17 +55,21 @@ public class EventAdminController {
     }
 
     @PutMapping(value = "{id}")
-    public ResponseEntity<String> updateEvent(
+    public ResponseEntity<Object> updateEvent(
             @RequestBody @Valid UpdateEventRequest request,
             @PathVariable Long id) {
         eventService.updateEvent(id, request);
-        return ResponseEntity.ok("update success !!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "update success !!"));
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
-        return ResponseEntity.ok("delete success !!");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "delete success !!"));
     }
 
 
