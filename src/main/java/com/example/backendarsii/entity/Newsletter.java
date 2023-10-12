@@ -1,40 +1,38 @@
 package com.example.backendarsii.entity;
 
 
-import com.example.backendarsii.utils.enumData.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "club")
-@SQLDelete(sql = "UPDATE club SET deleted = true WHERE id=?")
+@Table(name = "newsletter")
+@SQLDelete(sql = "UPDATE newsletter SET deleted = true WHERE id=?")
 @Where(clause = "deleted = false ")
-public class Club {
+public class Newsletter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String logo;
-    private String location;
-    private String description;
-    private String contact;
-    private boolean status;
+    private String email;
+    @ElementCollection
+    private List<String> subscribers;
     @CreationTimestamp
     private Instant createdAt;
-    @CreationTimestamp
-    private Instant updatedAt;
+    @UpdateTimestamp
+    private Instant UpdatedAt;
     private boolean deleted = Boolean.FALSE;
+
 }
