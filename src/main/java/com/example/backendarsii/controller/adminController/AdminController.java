@@ -1,5 +1,6 @@
 package com.example.backendarsii.controller.adminController;
 
+import com.example.backendarsii.config.TokenExpiredException;
 import com.example.backendarsii.config.UtilsConfiguration;
 import com.example.backendarsii.dto.requestDto.PasswordChangeRequest;
 import com.example.backendarsii.dto.requestDto.UpdateUserRequest;
@@ -71,9 +72,15 @@ public class AdminController {
     }
 
     @GetMapping(value = "me")
-    public ResponseEntity<UserResponse> getUserConnected() {
-
+    public ResponseEntity<Object> getUserConnected() {
+    try{
         return ResponseEntity.ok(userService.getConnectedUser());
+    } catch (TokenExpiredException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token has expired");
+    } catch (Exception e) {
+        // Handle other exceptions
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+    }
     }
 
     @PutMapping(value = "{id}")

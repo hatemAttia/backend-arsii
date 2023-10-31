@@ -43,9 +43,9 @@ public class EmailUtil {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             helper.setFrom(fromEmail);
-            helper.setTo(recipientEmail);
+            helper.setTo(fromEmail);
             helper.setSubject(subject);
-            helper.setText(content);
+            helper.setText(content+" \n from email :"+ recipientEmail);
 
             javaMailSender.send(message);
         } catch (MessagingException e) {

@@ -1,6 +1,7 @@
 package com.example.backendarsii.controller;
 
 import com.example.backendarsii.dto.requestDto.EmailForm;
+import com.example.backendarsii.dto.requestDto.NewsletterRequest;
 import com.example.backendarsii.dto.responseDto.*;
 import com.example.backendarsii.service.*;
 import com.example.backendarsii.utils.Constants;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class VisitorController {
     public final OpportunityService opportunityService;
     public final ClubService clubService;
     private final MediaService mediaService;
+    private final NewsletterService newsletterService;
     private final EmailUtil emailUtil;
 
 
@@ -36,6 +39,7 @@ public class VisitorController {
     public ResponseEntity<List<UserResponse>> getAllMember() {
         return ResponseEntity.ok(userService.getAllMember());
     }
+
     @GetMapping(value = "allEvent/{type}")
     public ResponseEntity<List<EventResponse>> getAllEvent(@PathVariable EventType type) {
         return ResponseEntity.ok(eventService.getAllEvent(type));
@@ -47,7 +51,7 @@ public class VisitorController {
     }
 
     @GetMapping("allOportunity")
-    public ResponseEntity<List<OpportunityResponse>> getAllOpportunity (){
+    public ResponseEntity<List<OpportunityResponse>> getAllOpportunity() {
         return ResponseEntity.ok(opportunityService.getAllOpportunity());
     }
 
@@ -62,8 +66,10 @@ public class VisitorController {
         List<ClubResponse> clubs = clubService.getAllClub();
         return ResponseEntity.ok(clubs);
     }
+
     @GetMapping(value = "allMedia")
     public ResponseEntity<List<MediaResponse>> getAllMedia() {
+
         return ResponseEntity.ok(mediaService.getAllMedia());
     }
 
@@ -71,12 +77,26 @@ public class VisitorController {
     public ResponseEntity<MediaResponse> getMediaById(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(mediaService.getMediaById(id));
     }
+
     @PostMapping(value = "sendEmail")
     public ResponseEntity<Object> sendEmail(@RequestBody EmailForm form) {
 
-       emailUtil.sendEmail("attia00018@gmail.com", form.getFrom(), form.getSubject(), form.getContent());
+        emailUtil.sendEmail("attiahatem.tn@gmail.com", form.getFrom(), form.getSubject(), form.getContent());
 
-       return ResponseEntity.status(HttpStatus.CREATED).body(
+        return ResponseEntity.status(HttpStatus.CREATED).body(
                 Collections.singletonMap("message", "OK !!!!!!"));
+    }
+
+    @PostMapping(value = "newsletter")
+    public ResponseEntity<Object> createNewsletter(@RequestBody @Valid NewsletterRequest newsletterRequest) {
+        if (newsletterRequest != null) {
+            newsletterService.createNewsletter(newsletterRequest);
+            return
+                    ResponseEntity.status(HttpStatus.CREATED).body(
+                            Collections.singletonMap("message", "newsletter created successfully"));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    Collections.singletonMap("message","Invalid newsletter data"));
+        }
     }
 }

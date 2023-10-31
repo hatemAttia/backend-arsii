@@ -1,6 +1,7 @@
 package com.example.backendarsii.config;
 
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +19,8 @@ import static com.example.backendarsii.utils.Constants.*;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-
-
     private final JwtAuthenticationFilter jwtAuthFilter;
-
     private final AuthenticationProvider authenticationProvider;
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

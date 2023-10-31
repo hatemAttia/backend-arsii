@@ -30,19 +30,21 @@ public class NewsletterController {
     private final NewsletterService newsletterService;
 
     @PostMapping
-    public ResponseEntity<String> createNewsletter(@RequestBody @Valid NewsletterRequest newsletterRequest)
-    {
+    public ResponseEntity<String> createNewsletter(@RequestBody @Valid NewsletterRequest newsletterRequest) {
         if (newsletterRequest != null) {
             newsletterService.createNewsletter(newsletterRequest);
             return ResponseEntity.ok("newsletter created successfully");
         } else {
             return ResponseEntity.badRequest().body("Invalid newsletter data");
-        }}
-     @PostMapping("/subscribe")
-    public String subscription(@RequestParam("email") String email){
+        }
+    }
+
+    @PostMapping("/subscribe")
+    public String subscription(@RequestParam("email") String email) {
         newsletterService.subscribe(email);
-         return "subscription success";
-     }
+        return "subscription success";
+    }
+
     @GetMapping("/listofsubscribers")
     public ResponseEntity<List<NewsletterResponse>> listSubscribers() {
         List<NewsletterResponse> subscribers = newsletterService.getAllSubscribers();
@@ -51,20 +53,21 @@ public class NewsletterController {
 
 
     @GetMapping("/subscribers/{id}")
-    public  String listSubscribersById(@PathVariable("id") Integer id, Model model){
-         List<String> subscribers = newsletterService.getAllSubscribersById(id);
-         if(!subscribers.isEmpty()) {
-             model.addAttribute("Subscribers", subscribers);
-             return "subscribers by id";
-         }else{
-             return "subscribers not found";
-         }
-         }
+    public String listSubscribersById(@PathVariable("id") Integer id, Model model) {
+        List<String> subscribers = newsletterService.getAllSubscribersById(id);
+        if (!subscribers.isEmpty()) {
+            model.addAttribute("Subscribers", subscribers);
+            return "subscribers by id";
+        } else {
+            return "subscribers not found";
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteNewsletter(@PathVariable Integer id) {
         newsletterService.deleteNewsletter(id);
         return ResponseEntity.ok("Delete successfully");
     }
-     }
+}
 
 

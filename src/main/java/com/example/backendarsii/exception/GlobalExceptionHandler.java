@@ -1,5 +1,6 @@
 package com.example.backendarsii.exception;
 
+import com.example.backendarsii.config.TokenExpiredException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDetails details = new ErrorDetails(ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(details, ex.getStatusCode());
     }
-
+    public ResponseEntity<Object> handleTokenExpiredException(TokenExpiredException ex) {
+        return new ResponseEntity<>("Token has expired", HttpStatus.UNAUTHORIZED);
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
