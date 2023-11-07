@@ -5,10 +5,7 @@ import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
 import com.example.backendarsii.utils.enumData.Post;
 import com.example.backendarsii.utils.enumData.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -23,7 +20,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Setter
+    @Getter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

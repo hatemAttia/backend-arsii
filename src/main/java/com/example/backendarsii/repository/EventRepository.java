@@ -15,6 +15,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "SELECT E from Event E")
     List<Event> findAllEvent();
 
+
     @Query(value = "SELECT E from Event E where E.isActivity=true ")
     List<Event> findAllActivity();
 

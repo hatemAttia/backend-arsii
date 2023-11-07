@@ -31,11 +31,19 @@ public class UserEventAdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 Collections.singletonMap("message", "join success !!!"));
     }
+    @PostMapping(value = "/check")
+    public ResponseEntity<Object> checkjoinedEvent(@RequestBody @Valid UserEventRequest request) {
+        boolean exist= userEventService.checkJoinedEvent(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("status",exist));
+    }
+
 
     @GetMapping(value = "/users/{eventId}")
     public ResponseEntity<List<UserEventResponse>> getListOfUserByEvent(@PathVariable Long eventId) {
         return ResponseEntity.ok(userEventService.getListOfUserByEvent(eventId));
     }
+
 
     @GetMapping(value = "/events/{userId}")
     public ResponseEntity<List<EventUserResponse>> getListOfEventByUser(@PathVariable Long userId) {

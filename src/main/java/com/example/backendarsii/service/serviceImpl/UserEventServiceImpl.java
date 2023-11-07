@@ -6,6 +6,7 @@ import com.example.backendarsii.dto.responseDto.UserEventResponse;
 import com.example.backendarsii.entity.Event;
 import com.example.backendarsii.entity.User;
 import com.example.backendarsii.entity.UserEvent;
+import com.example.backendarsii.exception.ConflictException;
 import com.example.backendarsii.exception.NotFoundException;
 import com.example.backendarsii.repository.EventRepository;
 import com.example.backendarsii.repository.UserEventRepository;
@@ -35,8 +36,14 @@ public class UserEventServiceImpl implements UserEventService {
         Event event = eventRepository.findById(request.getEventId()).orElseThrow(
                 () -> new NotFoundException(String.format("this eventId [%s] is not exist", request.getEventId())));
 
-        if (Objects.equals(event.getNumberOfParticipants(), event.getMaxOfParticipants())) {
-            throw new RuntimeException("akahaw ba3 w rawa7 §§§§§§§§§§§µµµµµµµ*****");
+       Boolean existUserEvents =userEventRepository.CheckJoinedEvent(user, event);
+        System.out.println("*************************************"+ existUserEvents);
+
+        if ((Objects.equals(event.getNumberOfParticipants(), event.getMaxOfParticipants())  )) {
+            throw new ConflictException(String.format("this nevent its full ( [%s] ) ", request.getEventId()));
+        }
+        if( existUserEvents){
+            throw new ConflictException(String.format("this user event is already exist ( [%s] ) ", request.getUserId()));
         }
         event.setNumberOfParticipants(event.getNumberOfParticipants() + 1);
 
@@ -45,6 +52,18 @@ public class UserEventServiceImpl implements UserEventService {
                 .user(user).build());
     }
 
+
+    public boolean checkJoinedEvent(UserEventRequest request){
+        User user = userRepository.findById(request.getUserId()).orElseThrow(
+                () -> new NotFoundException(String.format("this userId [%s] is not exist", request.getUserId())));
+
+        Event event = eventRepository.findById(request.getEventId()).orElseThrow(
+                () -> new NotFoundException(String.format("this eventId [%s] is not exist", request.getEventId())));
+
+        Boolean existUserEvents =userEventRepository.CheckJoinedEvent(user, event);
+        System.out.println("*************************************"+ existUserEvents);
+        return  existUserEvents;
+    }
     @Override
     public List<EventUserResponse> getListOfEventByUser(Long userId) {
         List<UserEvent> userEvents = userEventRepository.findAllByUserId(userId);
