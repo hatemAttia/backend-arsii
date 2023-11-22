@@ -25,6 +25,7 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
+    @Column(length = 1000)
     private String description;
     @Column(name = "image", unique = false, nullable = false, length = 5000000)
     private String image;

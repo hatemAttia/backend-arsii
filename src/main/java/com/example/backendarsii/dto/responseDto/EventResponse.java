@@ -21,6 +21,7 @@ public class EventResponse {
     private Long numberOfParticipants;
     private String formateur;
     private String location;
+    private String urlFacebook;
     private Long price;
     private EventType type;
     private PartnerResponse partner;
@@ -42,6 +43,7 @@ public class EventResponse {
                     .type(event.getType())
                     .status(event.isStatus())
                     .price(event.getPrice())
+                    .urlFacebook(event.getUrlFacebook())
                     .maxOfParticipants(event.getMaxOfParticipants())
                     .isActivity(event.isActivity())
                     .createdAt(event.getCreatedAt())
@@ -61,6 +63,7 @@ public class EventResponse {
                 .maxOfParticipants(event.getMaxOfParticipants())
                 .partner(PartnerResponse.makePartner(event.getPartner()))
                 .status(event.isStatus())
+                .urlFacebook(event.getUrlFacebook())
                 .isActivity(event.isActivity())
                 .createdAt(event.getCreatedAt())
                 .updatedAt(event.getUpdatedAt())

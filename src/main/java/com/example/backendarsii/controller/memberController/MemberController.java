@@ -22,6 +22,7 @@ import javax.websocket.server.PathParam;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,8 +30,6 @@ import java.util.Objects;
 @Api(tags = "(Member) User Management ")
 @CrossOrigin("*")
 public class MemberController {
-
-
     public final UserService userService;
 
 
@@ -40,7 +39,7 @@ public class MemberController {
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<UserResponse> getMemberById(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<UserResponse> getMemberById(@PathVariable(name = "id") UUID id) {
         return ResponseEntity.ok(userService.getMemberById(id));
     }
 

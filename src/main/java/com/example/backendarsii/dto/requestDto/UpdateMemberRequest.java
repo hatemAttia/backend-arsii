@@ -37,5 +37,6 @@ public class UpdateMemberRequest {
     private Office office;
     private String image;
     private String cv;
+    private Boolean firstLogin;
 
 }

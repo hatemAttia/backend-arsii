@@ -1,6 +1,7 @@
 package com.example.backendarsii.exception;
 
-import com.example.backendarsii.config.TokenExpiredException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -20,13 +22,25 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(ExpiredTokenException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<String> handleExpiredTokenException(ExpiredTokenException ex) {
+        // Customize the error response for an expired token
+        return new ResponseEntity<>("{\"error\": \"Unauthorized\", \"message\": \"Token has expired\"}", HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> handleRunTimeException(ExpiredTokenException ex, WebRequest request) {
+        logger.error("Handling ExpiredTokenException: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(ApiBaseException.class)
     public ResponseEntity<ErrorDetails> handleApiExceptions(ApiBaseException ex, WebRequest request) {
         ErrorDetails details = new ErrorDetails(ex.getMessage(), request.getDescription(false));
+        logger.error("Handling ApiBaseException: {}", ex.getMessage());
         return new ResponseEntity<>(details, ex.getStatusCode());
-    }
-    public ResponseEntity<Object> handleTokenExpiredException(TokenExpiredException ex) {
-        return new ResponseEntity<>("Token has expired", HttpStatus.UNAUTHORIZED);
     }
 
     @Override
@@ -46,6 +60,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
-
-
 }

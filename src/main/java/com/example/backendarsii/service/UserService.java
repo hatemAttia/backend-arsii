@@ -14,21 +14,22 @@ import org.springframework.core.io.Resource;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
     List<UserResponse> getAllMember();
 
-    UserResponse getMemberById(Long id);
+    UserResponse getMemberById(UUID id);
 
-    void updateMember(Long id, UpdateMemberRequest request);
+    void updateMember(UUID id, UpdateMemberRequest request);
 
-    void updateUser(Long id, UpdateUserRequest request);
+    void updateUser(UUID id, UpdateUserRequest request);
 
     UserResponse getConnectedUser();
 
-    void deleteMember(Long id);
+    void deleteMember(UUID id);
 
-    void enableMember(Long id);
+    void enableMember(UUID id);
 
 
 
@@ -36,7 +37,7 @@ public interface UserService {
 
     Page<UserResponse> getAllUserByFilter(SearchAdmin searchAdmin, Pageable pageable);
 
-    void changePassword(PasswordChangeRequest passwordChangeRequest, Long id);
+    void changePassword(PasswordChangeRequest passwordChangeRequest, UUID id);
 
      void forgotPassword(String username) ;
 

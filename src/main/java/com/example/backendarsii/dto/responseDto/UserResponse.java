@@ -15,6 +15,7 @@ import javax.persistence.Enumerated;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -22,7 +23,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserResponse {
 
-    private Long id;
+    private UUID id;
     private String firstName;
     private String lastName;
     private String userName;
@@ -44,9 +45,11 @@ public class UserResponse {
     private boolean status;
     private boolean isPaid;
 
+    private boolean firstLogin;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant expiresAt;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -70,6 +73,7 @@ public class UserResponse {
                 .contacts(ContactResponse.makeContacts(user.getContacts()))
                 .status(user.isStatus())
                 .isPaid(user.isPaid())
+                .firstLogin(user.isFirstLogin())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .expiresAt(user.getExpiresAt())

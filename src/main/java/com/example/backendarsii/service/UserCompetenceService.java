@@ -5,6 +5,7 @@ import com.example.backendarsii.dto.responseDto.UserCompetenceResponse;
 import com.example.backendarsii.dto.responseDto.UserResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserCompetenceService {
 
@@ -12,7 +13,7 @@ public interface UserCompetenceService {
 
     void updateUserCompetence(Long id, UserCompetenceRequest userCompetenceRequest);
 
-    List<UserCompetenceResponse> getAllCompetenceByUser(Long id);
+    List<UserCompetenceResponse> getAllCompetenceByUser(UUID id);
 
     List<UserResponse> getAllUserByCompetence(Long id);
 

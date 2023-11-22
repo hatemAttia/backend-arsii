@@ -1,6 +1,6 @@
 package com.example.backendarsii.service.serviceImpl;
 
-import com.example.backendarsii.config.TokenExpiredException;
+import com.example.backendarsii.exception.ExpiredTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -21,9 +21,11 @@ public class JwtService {
 
     private static final String SECRET_KEY = "dmXqhlCjICkICM3/mf0y7LRJDvyXpGB3BcBcnkuUVFKNLxoy15vZnaTnK4JkCl2T";
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
+//    public String extractUsername(String token) {
+//        return extractClaim(token, Claims::getSubject);
+//    }
+
+
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
@@ -53,13 +55,13 @@ public class JwtService {
         return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    public boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
+//    public boolean isTokenExpired(String token) {
+//        return extractExpiration(token).before(new Date());
+//    }
 
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
+//    private Date extractExpiration(String token) {
+//        return extractClaim(token, Claims::getExpiration);
+//    }
 
     private Claims extractAllClaims(String token) {
             return Jwts
@@ -74,4 +76,30 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+
+
+
+
+
+
+
+    public void validateToken(String token) throws ExpiredTokenException {
+        Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+    }
+
+    public String extractUsername(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public Date extractExpiration(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration();
+    }
+
+    public boolean isTokenExpired(String token) {
+        final Date expiration = extractExpiration(token);
+        return expiration.before(new Date());
+    }
+
+
 }

@@ -54,7 +54,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .image(request.getImage())
                 .isPaid(false)
                 .role(Role.MEMBER)
-                .post(Post.MEMBER)
+                .post(request.getPost())
                 .office(request.getOffice())
                 .build();
         userRepository.save(user);

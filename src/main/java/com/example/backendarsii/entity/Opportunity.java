@@ -27,6 +27,7 @@ public class Opportunity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
+    @Column(length = 1000)
     private String description;
     @Enumerated(EnumType.STRING)
     private OpportunityType type;

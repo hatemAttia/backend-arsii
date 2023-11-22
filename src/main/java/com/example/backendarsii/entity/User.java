@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Setter
     @Getter
@@ -27,13 +28,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "\"user\"")
 @SQLDelete(sql = "UPDATE user SET deleted = true WHERE id=?")
 @Where(clause = "deleted = false ")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
     private String firstName;
     private String lastName;
     private String userName;
@@ -64,6 +65,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Contact> contacts;
     private boolean status = Boolean.FALSE;
+    private boolean firstLogin = Boolean.FALSE;
     private boolean isPaid = Boolean.FALSE;
     private boolean deleted = Boolean.FALSE;
 

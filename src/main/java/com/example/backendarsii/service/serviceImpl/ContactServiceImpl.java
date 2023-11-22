@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -56,7 +57,7 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public List<ContactResponse> getAllContactByUser(Long userId) {
+    public List<ContactResponse> getAllContactByUser(UUID userId) {
 
         List<Contact> contacts = contactRepository.findAllByUserId(userId);
         List<ContactResponse> contactResponses = new ArrayList<>();

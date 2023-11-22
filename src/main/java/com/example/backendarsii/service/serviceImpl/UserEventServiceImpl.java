@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +66,7 @@ public class UserEventServiceImpl implements UserEventService {
         return  existUserEvents;
     }
     @Override
-    public List<EventUserResponse> getListOfEventByUser(Long userId) {
+    public List<EventUserResponse> getListOfEventByUser(UUID userId) {
         List<UserEvent> userEvents = userEventRepository.findAllByUserId(userId);
         List<EventUserResponse> eventUserResponses = new ArrayList<>();
 

@@ -7,10 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserEventRepository extends JpaRepository<UserEvent, Long> {
 
-    List<UserEvent> findAllByUserId(Long id);
+    List<UserEvent> findAllByUserId(UUID id);
 
     List<UserEvent> findAllByEventId(Long id);
 

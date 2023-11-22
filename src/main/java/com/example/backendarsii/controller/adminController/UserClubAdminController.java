@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -38,7 +39,7 @@ public class UserClubAdminController {
     }
 
     @GetMapping(value = "club/{id}")
-    public ResponseEntity<List<UserClubResponse>> getAllClubByUser(@PathVariable Long id) {
+    public ResponseEntity<List<UserClubResponse>> getAllClubByUser(@PathVariable UUID id) {
 
         return ResponseEntity.ok(userClubService.getAllClubByUser(id));
     }

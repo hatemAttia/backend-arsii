@@ -27,6 +27,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    @Column(length = 1000)
     private String description;
     @OneToMany(mappedBy = "category")
     private List<Competence> competences;

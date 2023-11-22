@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.URL;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -18,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public class ContactRequest {
 
     @NotNull(message = "userId is required")
-    private Long userId;
+    private UUID userId;
     @Enumerated(EnumType.STRING)
     private Platform platform;
     @URL(message = "this URL is not valid")

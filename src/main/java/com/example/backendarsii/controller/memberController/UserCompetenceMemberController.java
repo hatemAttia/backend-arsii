@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,7 +27,7 @@ public class UserCompetenceMemberController {
     private final UserCompetenceService userCompetenceService;
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<Object> addUserCompetence(@RequestBody @Valid UserCompetenceRequest request) {
         userCompetenceService.addUserCompetence(request);
 
@@ -46,7 +47,7 @@ public class UserCompetenceMemberController {
     }
 
     @GetMapping(value = "competences/{id}")
-    public ResponseEntity<List<UserCompetenceResponse>> getAllCompetencesByUser(@PathVariable Long id) {
+    public ResponseEntity<List<UserCompetenceResponse>> getAllCompetencesByUser(@PathVariable UUID id) {
 
         return ResponseEntity.ok(userCompetenceService.getAllCompetenceByUser(id));
     }
@@ -60,6 +61,13 @@ public class UserCompetenceMemberController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 Collections.singletonMap("message", "update success !!"));
+    }
+
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<Object> deleteUserCompetence(@PathVariable Long id) {
+        userCompetenceService.deleteUserCompetence(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                Collections.singletonMap("message", "delete success !!!"));
     }
 
 

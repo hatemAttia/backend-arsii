@@ -39,6 +39,7 @@ public class EventServiceImpl implements EventService {
                 .formateur(eventRequest.getFormateur())
                 .price(eventRequest.getPrice())
                 .location(eventRequest.getLocation())
+                .urlFacebook(eventRequest.getUrlFacebook())
                 .type(eventRequest.getType())
                 .partner(partner)
                 .image(eventRequest.getImage())
@@ -98,6 +99,9 @@ public class EventServiceImpl implements EventService {
         }
         if (updateEventRequest.getDate() != null) {
             event.setDate(updateEventRequest.getDate());
+        }
+        if (updateEventRequest.getUrlFacebook() != null) {
+            event.setUrlFacebook(updateEventRequest.getUrlFacebook());
         }
         if (updateEventRequest.getMaxOfParticipants() != 0) {
             event.setMaxOfParticipants(updateEventRequest.getMaxOfParticipants());

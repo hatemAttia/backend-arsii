@@ -2,6 +2,7 @@ package com.example.backendarsii.dto.requestDto;
 
 import com.example.backendarsii.utils.enumData.Gender;
 import com.example.backendarsii.utils.enumData.Office;
+import com.example.backendarsii.utils.enumData.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,6 +41,7 @@ public class RegisterRequest {
     @NotBlank(message = "your region is required")
     private String region;
     private String job;
+    private Post post;
     private String image;
     private String universityOrCompany;
     @Enumerated(EnumType.STRING)

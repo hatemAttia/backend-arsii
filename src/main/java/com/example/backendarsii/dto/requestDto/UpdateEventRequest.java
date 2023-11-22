@@ -29,6 +29,7 @@ public class UpdateEventRequest {
 
     @NotBlank(message = "location is required")
     private String location;
+    private String urlFacebook;
     private String image;
     @Enumerated(EnumType.STRING)
     private EventType type;

@@ -28,12 +28,14 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
+    @Column(length = 1000)
     private String description;
     private LocalDateTime date;
     private String image;
     private Long maxOfParticipants;
     private Long numberOfParticipants;
     private String location;
+    private String urlFacebook;
     @Enumerated(EnumType.STRING)
     private EventType type;
     private String formateur;

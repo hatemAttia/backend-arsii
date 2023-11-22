@@ -33,6 +33,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -61,14 +62,14 @@ public class UserServerImpl implements UserService {
     }
 
     @Override
-    public UserResponse getMemberById(Long id) {
+    public UserResponse getMemberById(UUID id) {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("this user with id [%s] not exist", id)));
         return UserResponse.makeUser(user);
     }
 
     @Override
-    public void updateMember(Long id, UpdateMemberRequest request) {
+    public void updateMember(UUID id, UpdateMemberRequest request) {
 
         User user = userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("this user with id [%s] not exist", id)));
@@ -91,6 +92,9 @@ public class UserServerImpl implements UserService {
         }
         if (request.getEmail() != null) {
             user.setEmail(request.getEmail());
+        }
+        if (request.getFirstLogin() != null) {
+            user.setFirstLogin(request.getFirstLogin());
         }
         if (request.getGender() != null) {
             user.setGender(request.getGender());
@@ -125,7 +129,7 @@ public class UserServerImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, UpdateUserRequest request) {
+    public void updateUser(UUID id, UpdateUserRequest request) {
 
         User user = userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("this user with id [%s] not exist", id)));
@@ -189,7 +193,7 @@ public class UserServerImpl implements UserService {
 
     @Override
     public UserResponse getConnectedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication() ;
         String currentUserName = authentication.getName();
         Optional<User> user = userRepository.findByUserName(currentUserName);
         if (user.isPresent()) {
@@ -198,13 +202,13 @@ public class UserServerImpl implements UserService {
     }
 
     @Override
-    public void deleteMember(Long id) {
+    public void deleteMember(UUID id) {
 
         userRepository.deleteById(id);
     }
 
     @Override
-    public void enableMember(Long id) {
+    public void enableMember(UUID id) {
 
         User user = userRepository.findById(id).orElseThrow();
         user.setPaid(true);
@@ -373,7 +377,7 @@ public class UserServerImpl implements UserService {
     }
 
     @Override
-    public void changePassword(PasswordChangeRequest passwordChangeRequest, Long id) {
+    public void changePassword(PasswordChangeRequest passwordChangeRequest, UUID id) {
 
         User user = userRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format("this user with id [%s] is not exist", id)));
